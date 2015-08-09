@@ -35,10 +35,9 @@ def getPlayerDraftTeam(playerLink):
 def isSavior(playerLink,teamLink):
 	drafter= getPlayerDraftTeam(playerLink)
 	champ= teamFromURL(teamLink)
-	#print playerLink,drafter,champ
 	return drafter==champ
 
-def saviors(teamLink):
+def getSaviors(teamLink):
 	roster= getPlayersOnTeam(teamLink)
 	saviors= [player for player in roster if isSavior(player,teamLink)]
 	return saviors

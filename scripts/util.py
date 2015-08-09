@@ -29,10 +29,13 @@ def yearFromURL(f):
 	return int(f[f.rfind('/')+1:f.find('.')])
 
 def teamFromURL(f):
-	stripOffYear= f[:f.rfind('/')]
-	year= stripOffYear[stripOffYear.rfind('/')+1:]
-	return year
+	e= f[:f.rfind('/')]
+	return e[e.rfind('/')+1:]
 
+def seasonFromYear(year):
+	startYr= str(year-1)
+	endYr= str(year%100).zfill(2) 
+	return startYr+'-'+endYr
 
 
 '''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  file system  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
@@ -67,3 +70,9 @@ def listsToCSV(lists,fn):
 	csv_wr = csv.writer(csv_file)
 	for row in lists:
 		csv_wr.writerow(row)
+
+
+def writeJSONToFile(jsonData,filename):
+	currentDir= os.getcwd()
+	with open(currentDir+filename, 'w') as outfile:
+		json.dump(jsonData, outfile)

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Saviors</title>
+        <link type="text/css" rel="stylesheet" href="style/saviors.css" />
+        <link type="text/css" rel="stylesheet" href="style/tooltip.css" />
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    </head>
+    <body>
+		
+		<div id="mainChart"></div>
+		<div id="navChart"></div>
+
+        <script type="text/javascript">
+
+            d3.json("../scripts/saviors.json", function(teams) {
+
+            	var w= 800;
+            	var h= 350;
+            	var navH= 100;
+
+            	var margin = {top: 150, right: 20, bottom: 20, left:80}
+
+				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
+				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':20, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':5, 'xTitle':50, 'yTitle':50}
+
+				//Create SVG element
+				var chart= d3.select("#mainChart")
+							.append("svg")
+							.attr("width",main['w']+margin.left+margin.right)
+							.attr("height",main['h']+margin.top+margin.bottom)    
+							.append('g')
+    						.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+				//Defining the scales and axes
+				var xScale = d3.scale.linear()
+								.domain([main['x0'], main['xN']+1])
+								.range([0, main['w']]);		  
+				var yScale = d3.scale.linear()
+								.domain([main['y0'], main['yN']])
+								.range([main['h'],0]);
+
+
+
+				var chartArea = chart.append('g')
+					    .attr('clip-path', 'url(#chartAreaClip)');
+
+				chartArea.append('clipPath')
+				    .attr('id', 'chartAreaClip')
+				    .append('rect')
+				    .attr({ width: main['w'], height: main['h'] });            
+	  			
+	  			//Drawing rect on chart for backgroud color
+				chartArea.append("rect")
+						  .attr("id","backgroundRect")
+						  .attr("x", xScale(main['x0']))
+						  .attr("y", yScale(main['yN']))
+						  .attr("width","100%")
+						  .attr("height","100%")
+
+				var xAxis = d3.svg.axis()
+								.scale(xScale)
+								.ticks(main['t'])
+								.orient("bottom")
+								.tickFormat(d3.format("d"));
+				var yAxis = d3.svg.axis()
+								.scale(yScale)
+								.ticks(main['t'])
+								.orient("left")
+								.tickFormat(d3.format("d"));
+	  
+				//Drawing the axes
+				chart.append("g")
+						.attr("class", "axis")
+						.attr("id","xAxis")
+						.attr("transform", "translate("+0+"," + yScale(main['xAxisLoc']) + ")")
+						.call(xAxis);
+				chart.append("g")
+						.attr("class", "axis")
+						.attr("id","yAxis")
+						.attr("transform", "translate("+ xScale(main['yAxisLoc']) +"," + 0 + ")")
+						.call(yAxis);	
+				
+
+				//Tooltop for bars
+				var tip = d3.tip()
+						  .attr('class', 'd3-tip')
+						  .offset([-10, 0])
+						  .html(function(d) {
+						    return "<p>2014 " + d.team + "</p> <p>Savior playoff minutes: <span style='color:red'>" + d.combinedMins + "</span></p> <p>Savior win shares: <span style='color:red'>" + d.combinedWS + "</span></p> <p> Click to see " + d.team+ "\'s saviors</p>";
+						  })
+				chart.call(tip)
+										
+				var barWidth= 20
+				var bars= chartArea.selectAll("rect.bar")
+							.data(teams)
+							.enter()
+							.append("rect")
+							.attr("class","bar")
+							.attr("x",function(d,i){
+	                                return xScale(i+main['x0']+1)-barWidth/2;
+	                            })
+	                        .attr("y",function(d){
+	                                return yScale(d["saviors"].length);
+	                            })
+	                        .attr("width",barWidth)
+	                        .attr("height",function(d){
+	                                return yScale(0)-yScale(d["saviors"].length);
+	                            })
+	                        .attr("fill",function() {
+									return "green";
+								})
+	                        .on('mouseover', tip.show)
+      						.on('mouseout', tip.hide)
+				
+
+				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
+				var navMargin = {top: 20, right: 20, bottom: 20, left: 80}
+				var navBarWidth= 20
+				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':20, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':15}
+
+				var navChart= d3.select("#navChart")
+								.append("svg") 
+								.attr("width",nav['w']+navMargin.left+navMargin.right)
+								.attr("height",nav['h']+navMargin.top+navMargin.bottom)    
+								.append('g')
+	    						.attr('transform', 'translate(' + navMargin.left + ',' + navMargin.top + ')');
+
+				var navXScale = d3.scale.linear()
+				        		.domain([main['x0'], main['xN']+1])
+								.range([0, nav['w']]);	
+				var navYScale = d3.scale.linear()
+				        		.domain([main['y0'], main['yN']])
+								.range([nav['h'],0]);
+
+				var navXAxis = d3.svg.axis()
+							    .scale(navXScale)
+							    .ticks(nav['t'])
+							    .orient('bottom')
+								.tickFormat(d3.format("d"));
+
+				navChart.append('g')
+				    .attr('class', 'x axis')
+				    .attr('transform', 'translate(0,' + nav['h'] + ')')
+				    .call(navXAxis);
+
+				var navBars= navChart.selectAll("rect.bar")
+								.data(teams)
+								.enter()
+								.append("rect")
+								.attr("class","bar")
+								.attr("x",function(d,i){
+		                                return navXScale(i+main['x0']+1)-navBarWidth/2;
+		                            })
+		                        .attr("y",function(d){
+		                                return navYScale(d["saviors"].length);
+		                            })
+		                        .attr("width",navBarWidth)
+		                        .attr("height",function(d){
+		                                return navYScale(0)-navYScale(d["saviors"].length);
+		                            })
+		                        .attr("fill",function() {
+										return "blue";
+									})
+
+
+				/*~~~~~~~~   VIEW PORT   ~~~~~~~~~~*/          
+				var viewport = d3.svg.brush()
+				    .x(navXScale)
+				    .on("brush", function () {
+				        xScale.domain(viewport.empty() ? navXScale.domain() : viewport.extent());
+				        chart.selectAll("rect.bar")
+				        	.attr("x", function(d,i) { 
+					        	return xScale(i+main['x0']+1)-barWidth/2;
+					        })
+    					chart.select('#xAxis').call(xAxis);
+				    });
+
+			    navChart.append("g")
+						.attr("class", "viewport")
+						.call(viewport)
+						.selectAll("rect")
+						.attr("height", nav['h'])
+						.attr("fill","purple")
+						.attr("opacity",0.5)
+
+            });
+        </script>
+    </body>
+</html>

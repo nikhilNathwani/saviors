@@ -1,0 +1,23 @@
+html,body {
+	font-family: sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-size: 15px;
+}
+
+#lines {
+	stroke-width: 2;
+	stroke: #ffffff;
+}
+
+#backgroundRect {
+	fill: #dddddd;
+}
