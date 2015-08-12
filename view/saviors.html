@@ -102,11 +102,11 @@
 				chart.call(tip)
 										
 				var barWidth= 20
-				var bars= chartArea.selectAll("rect.bar")
+				var bars= chartArea.selectAll("rect.mainBar")
 							.data(teams)
 							.enter()
 							.append("rect")
-							.attr("class","bar")
+							.attr("class","mainBar")
 							.attr("x",function(d,i){
 	                                return xScale(i+main['x0']+1)-barWidth/2;
 	                            })
