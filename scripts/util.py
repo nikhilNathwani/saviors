@@ -37,6 +37,10 @@ def seasonFromYear(year):
 	endYr= str(year%100).zfill(2) 
 	return startYr+'-'+endYr
 
+def yearFromSeason(season):
+	a= season
+	return int(a[:a.find('-')])+1
+
 
 '''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  file system  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
 

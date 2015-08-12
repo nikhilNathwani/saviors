@@ -43,7 +43,7 @@ def genPlayerDict(playerLink,year):
 		playoffTable=playoffTable.find("tbody")
 	rows= playoffTable.findAll('tr')
 	#if champRow is empty, player didn't participate in playoffs
-	champRow= [r for r in rows if r.find('td').find('a').text==seasonFromYear(year)]
+	champRow= [r for r in rows if r.find('td').find('a') != None and r.find('td').find('a').text==seasonFromYear(year)]
 	if len(champRow)==0:
 		return d
 	else: 
