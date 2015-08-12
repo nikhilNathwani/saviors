@@ -180,7 +180,7 @@
 				    .x(navXScale)
 				    .on("brush", function () {
 				        xScale.domain(viewport.empty() ? navXScale.domain() : viewport.extent());
-				        chart.selectAll("rect.bar")
+				        chart.selectAll("rect.mainBar")
 				        	.attr("x", function(d,i) { 
 					        	return xScale(i+main['x0']+1)-barWidth/2;
 					        })
