@@ -27,7 +27,7 @@ def genPlayerDict(playerLink,year):
 	#header div from which name and jerseyNum can be found
 	header= soup.find("div",{"id":"info_box"})
 	name= header.find("h1").text
-	d['name']= name[name.find(' '):].encode("ascii","ignore")
+	d['name']= name[name.find(' ')+1:].encode("ascii","ignore")
 	d['jerseyNum']= 0
 	d['totalPlayoffMins']= 0
 	d['games']= 0
