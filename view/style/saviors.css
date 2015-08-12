@@ -2,6 +2,10 @@ html,body {
 	font-family: sans-serif;
 }
 
+div#chart, div#jerseys{
+	display: inline-block;
+}
+
 .axis path,
 .axis line {
     fill: none;

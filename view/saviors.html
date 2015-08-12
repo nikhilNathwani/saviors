@@ -7,13 +7,12 @@
         <link type="text/css" rel="stylesheet" href="style/tooltip.css" />
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-        <!-- <script src="scripts/jersey.js"></script> -->
+        <script src="scripts/jersey.js"></script>
     </head>
     <body>
 		
-		<div id="mainChart"></div>
+		<div id="chart"></div>
 		<div id="jerseys"></div>
-		<div id="navChart"></div>
 
         <script type="text/javascript">
 
@@ -22,16 +21,22 @@
             	var totalTeams= teams.length;
             	var w= 800;
             	var h= 350;
-            	var navH= 100;
+            	var navH= 150;
 
-            	var margin = {top: 150, right: 20, bottom: 20, left:80}
+            	var margin = {top: 100, right: 20, bottom: 20, left:80}
+
+            	/*~~~~~~~~   OVERARCHING SVG   ~~~~~~~~~~*/
+            	var chartsSVG= d3.select("#chart")
+            					.append("svg")
+            					.attr("width",w)
+            					.attr("height",h+navH)
+
 
 				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':20, 'y0':0, 'yAxisLoc':0, 'yN':4000, 't':5, 'xTitle':50, 'yTitle':50}
 
 				//Create SVG element
-				var chart= d3.select("#mainChart")
-							.append("svg")
+				var chart= chartsSVG.append("svg")
 							.attr("width",main['w']+margin.left+margin.right)
 							.attr("height",main['h']+margin.top+margin.bottom)    
 							.append('g')
@@ -112,12 +117,12 @@
 	                        .attr("height",function(d){
 	                                return yScale(0)-yScale(d["combinedMins"]);
 	                            })
-	                        .attr("fill",function() {
-									return "green";
-								})
+	                        .attr("fill","green")
+	                        .on('click',function(d,i) {
+      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],d["saviors"]) 
+      						})
 	                        .on('mouseover', tip.show)
       						.on('mouseout', tip.hide)
-
 				
 
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
@@ -125,10 +130,10 @@
 				var navBarWidth= 20
 				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':20, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':15}
 
-				var navChart= d3.select("#navChart")
-								.append("svg") 
+				var navChart= chartsSVG.append("svg") 
 								.attr("width",nav['w']+navMargin.left+navMargin.right)
 								.attr("height",nav['h']+navMargin.top+navMargin.bottom)    
+								.attr("y",h)
 								.append('g')
 	    						.attr('transform', 'translate(' + navMargin.left + ',' + navMargin.top + ')');
 
@@ -201,19 +206,24 @@
 
 				/*~~~~~~~~   JERSEYS   ~~~~~~~~~~*/
 
-				/*Create SVG element
-				var jerseys= d3.select("#jerseys")
+				//Create SVG element
+				var jersSVG_w= 400;
+				var jersSVG_h= h+navH-margin.top;
+
+				var jerseySVG= d3.select("div#jerseys")
 								.append("svg")
-								.attr("width",500)
-								.attr("height",800)    
+								.attr("width",jersSVG_w)
+								.attr("height",jersSVG_h)    
+								.attr("y",margin.top)
 				
-				jerseys.selectAll("svg")
-		                .data(teams)
-		                .enter()
-		                .append("svg")
-		                .each(function(d,i){
-		                    createJersey(d3.select(this),i*80 + 20,0,d.team,d["name"],d["statValue"],i);
-		                }); */
+				var container= jerseySVG.append("rect")
+									.attr('x',0)
+									.attr('y',0)
+									.attr('width',"100%")
+									.attr('height',"100%")
+									.attr('fill',"white")
+									.attr('stroke',"black")
+									.attr('stroke-width',4)
 
             });
         </script>
