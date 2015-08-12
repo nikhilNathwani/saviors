@@ -5,9 +5,12 @@ def getChampions():
 	#In the table of seasons, champion is the 3rd column
 	soup= grabSiteData(championListURL)
 	seasonRows= soup.find("tbody").findAll("tr")
-	champCells= [cols.findAll("td")[2] for cols in seasonRows]
+	champCells= [cols.findAll("td")[2] for cols in seasonRows if notABA(cols)]
 	champs= [champLink.find("a")["href"].encode("ascii","ignore") for champLink in champCells]
 	return champs
+
+def notABA(cols):
+	return cols.findAll("td")[1].find("a").text != "ABA"
 
 def getPlayersOnTeam(teamLink):
 	teamSite= grabSiteData("http://www.basketball-reference.com"+teamLink)
