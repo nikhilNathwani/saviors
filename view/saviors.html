@@ -7,16 +7,19 @@
         <link type="text/css" rel="stylesheet" href="style/tooltip.css" />
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+        <!-- <script src="scripts/jersey.js"></script> -->
     </head>
     <body>
 		
 		<div id="mainChart"></div>
+		<div id="jerseys"></div>
 		<div id="navChart"></div>
 
         <script type="text/javascript">
 
             d3.json("../scripts/saviors.json", function(teams) {
 
+            	var totalTeams= teams.length;
             	var w= 800;
             	var h= 350;
             	var navH= 100;
@@ -105,7 +108,7 @@
 	                        .attr("y",function(d){
 	                                return yScale(d["combinedMins"]);
 	                            })
-	                        .attr("width",barWidth)
+	                        .attr("width", main['w']/(totalTeams+2))
 	                        .attr("height",function(d){
 	                                return yScale(0)-yScale(d["combinedMins"]);
 	                            })
@@ -114,6 +117,7 @@
 								})
 	                        .on('mouseover', tip.show)
       						.on('mouseout', tip.hide)
+
 				
 
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
@@ -175,6 +179,14 @@
 				        	.attr("x", function(d,i) { 
 					        	return xScale(i+main['x0']+1)-barWidth/2;
 					        })
+					        .attr("width", function() {
+					        	if(viewport.extent()[1]-viewport.extent()[0] ==0) {
+					        		return main['w']/(totalTeams+2);
+					        	}
+					        	else {
+					        		return main['w']/(viewport.extent()[1]-viewport.extent()[0]+1);
+					        	}
+					        })
     					chart.select('#xAxis').call(xAxis);
 				    });
 
@@ -185,6 +197,23 @@
 						.attr("height", nav['h'])
 						.attr("fill","purple")
 						.attr("opacity",0.5)
+
+
+				/*~~~~~~~~   JERSEYS   ~~~~~~~~~~*/
+
+				/*Create SVG element
+				var jerseys= d3.select("#jerseys")
+								.append("svg")
+								.attr("width",500)
+								.attr("height",800)    
+				
+				jerseys.selectAll("svg")
+		                .data(teams)
+		                .enter()
+		                .append("svg")
+		                .each(function(d,i){
+		                    createJersey(d3.select(this),i*80 + 20,0,d.team,d["name"],d["statValue"],i);
+		                }); */
 
             });
         </script>
