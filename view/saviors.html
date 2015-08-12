@@ -16,7 +16,7 @@
 
         <script type="text/javascript">
 
-            d3.json("../scripts/saviors.json", function(teams) {
+            d3.json("../data/saviors.json", function(teams) {
 
             	var totalTeams= teams.length;
             	var w= 800;
@@ -33,7 +33,7 @@
 
 
 				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
-				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':20, 'y0':0, 'yAxisLoc':0, 'yN':4000, 't':5, 'xTitle':50, 'yTitle':50}
+				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':64, 'y0':0, 'yAxisLoc':0, 'yN':4000, 't':5, 'xTitle':50, 'yTitle':50}
 
 				//Create SVG element
 				var chart= chartsSVG.append("svg")
@@ -128,7 +128,7 @@
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
 				var navMargin = {top: 20, right: 20, bottom: 20, left: 80}
 				var navBarWidth= 20
-				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':20, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':15}
+				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':64, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':15}
 
 				var navChart= chartsSVG.append("svg") 
 								.attr("width",nav['w']+navMargin.left+navMargin.right)
