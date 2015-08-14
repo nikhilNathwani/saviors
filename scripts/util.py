@@ -41,6 +41,10 @@ def yearFromSeason(season):
 	a= season
 	return int(a[:a.find('-')])+1
 
+#return last name from "LastName,FirstName"
+def lastNameFromFull(full):
+	return full[:full.find(',')]
+
 
 '''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  file system  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'''
 
