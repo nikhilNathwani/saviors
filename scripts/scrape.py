@@ -57,16 +57,18 @@ def getPlayerDraftTeam(playerLink):
 
 
 #get total playoff mins a team played, where each game contains 48*5= 240 total mins
-def getTeamPlayoffMins(teamLink):
+def getTeamPlayoffMinsAndWinsAndWins(teamLink):
 	teamSite= grabSiteData("http://www.basketball-reference.com"+teamLink)
 	info= teamSite.find("div",{"id":"info_box"}).findAll("p")[-1]
 	playoffSummary= info.text
 	dashes= [m.start() for m in re.finditer('-',playoffSummary)]
 	totalGames= 0
+	wins= 0
 	for d in dashes:
+		wins += int(playoffSummary[d-1])
 		totalGames += int(playoffSummary[d-1])
 		totalGames += int(playoffSummary[d+1])
-	return totalGames*48*5
+	return {"mins":totalGames*48*5,"wins":wins}
 
 
 #returns true if the given player was drafted by the given team
@@ -85,7 +87,7 @@ def getSaviors(teamLink):
 
 if __name__=="__main__":
 
-	print getTeamPlayoffMins('/teams/DAL/2011.html')
+	print getTeamPlayoffMinsAndWins('/teams/DAL/2011.html')
 
 	'''
 	start= time.time()

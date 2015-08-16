@@ -62,8 +62,9 @@ def genChampDict(teamLink):
 	d['year']= yearFromURL(teamLink)
 	d['link']= teamLink
 	d["saviors"]= [genPlayerDict(pl,yearFromURL(teamLink)) for pl in getSaviors(teamLink)]
-	d["totalMins"]= getTeamPlayoffMins(teamLink)
-	d["totalWS"]
+	mw= getTeamPlayoffMinsAndWins(teamLink)
+	d["totalMins"]= mw["mins"]
+	d["totalWS"]= mw["wins"]
 	d["saviorMins"]= reduce(lambda x,y: x+y, [x['totalPlayoffMins'] for x in d['saviors']])
 	d["saviorWS"]= round(reduce(lambda x,y: x+y, [x['winShares'] for x in d['saviors']]),1)
 	print d
