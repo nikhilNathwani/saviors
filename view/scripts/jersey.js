@@ -30,7 +30,8 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
 }
 
 function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
-    var name= player.name;
+    var name= player.lastName;
+    console.log(name)
     var number= player.jerseyNum;
 
     //SVG in which the jersey lives
@@ -80,14 +81,7 @@ function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,
             .attr("font-size",fontSize)
             .attr("text-anchor","left")
             .attr("dominant-baseline","hanging")
-            .text(function() {
-                if (id=="name") {
-                    return value.substring(value.indexOf(' '),value.length);
-                }
-                else {
-                    return value;
-                }
-            });
+            .text(value);
     
     var tBox= document.getElementById(value).getBBox()
     var oBox= document.getElementById("outline").getBBox()
