@@ -12,13 +12,6 @@ from scrape import *
 #of dicts containing the saviors' individual metadata
 
 
-#TO DO:
-#---create dict of # playoff wins needed to win a championship in a
-#   given year, and divide d["saviorWS"] in genChampDict by that 
-#   number to get a WS percentage 
-#---get player's jersey numbers
-#---get team's color
-
 
 def genPlayerDict(player,year):
 	playerLink= player["link"]

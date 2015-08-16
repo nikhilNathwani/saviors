@@ -18,6 +18,16 @@
 
             d3.json("../data/saviors.json", function(teams) {
 
+            	//FIGURE OUT HOW TO MAKE THIS VISIBLE FROM JERSEY.JS
+	            var colors= {"ATL":"#D21033", "BOS":"#05854C", "BRK":"#000000", "CHA":"#25799A", "CHI":"#D4001F", 
+	            			 "CLE":"#9F1425", "DAL":"#006AB5", "DEN":"#4393D1", "DET":"#006BB6", "GSW":"#FFC33C", 
+	            			 "HOU":"#CC0000", "IND":"#FFC225", "LAC":"#EE2944", "LAL":"#4A2583", "MEM":"#85A2C6", 
+	            			 "MIA":"#B62630", "MIL":"#00330A", "MIN":"#12397F", "NOP":"#091D4A", "NYK":"#2E66B2", 
+	            			 "OKC":"#0075C1", "ORL":"#077ABD", "PHI":"#C7974D", "PHO":"#FF7A31", "POR":"#E1393E", 
+	            			 "SAC":"#743389", "SAS":"#BEC8C9", "TOR":"#CD1041", "UTA":"#448CCE", "WAS":"#004874", 
+	            			 "SEA":"#006031", "WSB":"#CC3300", "STL":"#C41E3A", "PHW":"#FFCC00", "SYR":"#030066", 
+	            			 "MNL":"#6495ED"}
+
             	var totalTeams= teams.length;
             	var w= 800;
             	var h= 350;
@@ -117,7 +127,14 @@
 	                        .attr("height",function(d){
 	                                return yScale(0)-yScale(100*d["saviorMins"]/d["totalMins"]);
 	                            })
-	                        .attr("fill","green")
+	                        .attr("fill",function(d) {
+	                        	if (d["team"] in colors) {
+	                        		return colors[d["team"]];
+	                        	}
+	                        	else {
+	                        		return "grey";
+	                        	}
+	                        })
 	                        .on('click',function(d,i) {
       							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],d["saviors"]) 
       						})

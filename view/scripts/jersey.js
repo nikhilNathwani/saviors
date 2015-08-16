@@ -1,3 +1,12 @@
+var colors= {"ATL":"#D21033", "BOS":"#05854C", "BRK":"#000000", "CHA":"#25799A", "CHI":"#D4001F", 
+                             "CLE":"#9F1425", "DAL":"#006AB5", "DEN":"#4393D1", "DET":"#006BB6", "GSW":"#FFC33C", 
+                             "HOU":"#CC0000", "IND":"#FFC225", "LAC":"#EE2944", "LAL":"#4A2583", "MEM":"#85A2C6", 
+                             "MIA":"#B62630", "MIL":"#00330A", "MIN":"#12397F", "NOP":"#091D4A", "NYK":"#2E66B2", 
+                             "OKC":"#0075C1", "ORL":"#077ABD", "PHI":"#C7974D", "PHO":"#FF7A31", "POR":"#E1393E", 
+                             "SAC":"#743389", "SAS":"#BEC8C9", "TOR":"#CD1041", "UTA":"#448CCE", "WAS":"#004874", 
+                             "SEA":"#006031", "WSB":"#CC3300", "STL":"#C41E3A", "PHW":"#FFCC00", "SYR":"#030066", 
+                             "MNL":"#6495ED"}
+
 //Jersey container SVG vars
 topMargin= 20;
 minMargin= 20;
@@ -53,9 +62,13 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
                         .attr("stroke","#DDDDDD")
                         .attr("transform","translate(-40,0)")
                         //.attr("opacity","0.35")
-                        .attr("fill",function() {
-                            return "orange"
-                            //return colors[chosenTeam];
+                        .attr("fill",function(d) {
+                                if (chosenTeam in colors) {
+                                    return colors[chosenTeam];
+                                }
+                                else {
+                                    return "grey";
+                                }
                         })
                         .attr("stroke-width","3")
                         .attr("d","M116.462,113.911V39.01c0,0-18.493-5.977-15.317-30.633c0,0-8.033-2.616-8.78-3.363S91.617,9.311,79.29,9.124h-1.305C65.656,9.311,65.656,4.268,64.909,5.015s-8.778,3.363-8.778,3.363C59.305,33.034,40.813,39.01,40.813,39.01v74.901C40.813,113.911,74.434,126.427,116.462,113.911z");
