@@ -57,7 +57,7 @@ def getPlayerDraftTeam(playerLink):
 
 
 #get total playoff mins a team played, where each game contains 48*5= 240 total mins
-def getTeamPlayoffMinsAndWinsAndWins(teamLink):
+def getTeamPlayoffMinsAndWins(teamLink):
 	teamSite= grabSiteData("http://www.basketball-reference.com"+teamLink)
 	info= teamSite.find("div",{"id":"info_box"}).findAll("p")[-1]
 	playoffSummary= info.text
