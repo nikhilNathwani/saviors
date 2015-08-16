@@ -25,3 +25,14 @@ div#chart, div#jerseys{
 #backgroundRect {
 	fill: #dddddd;
 }
+
+.nav .fill {
+    fill: lightgrey;
+    stroke-width: 0px;
+}
+
+.nav .line {
+    fill: none;
+    stroke: darkgrey;
+    stroke-width: 1px;
+}

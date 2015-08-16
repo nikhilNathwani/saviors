@@ -130,7 +130,9 @@
 				var navBarWidth= 20
 				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':64, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':15}
 
+
 				var navChart= chartsSVG.append("svg") 
+								.attr("class","nav")
 								.attr("width",nav['w']+navMargin.left+navMargin.right)
 								.attr("height",nav['h']+navMargin.top+navMargin.bottom)    
 								.attr("y",h)
@@ -155,24 +157,22 @@
 				    .attr('transform', 'translate(0,' + nav['h'] + ')')
 				    .call(navXAxis);
 
-				var navBars= navChart.selectAll("rect.bar")
-								.data(teams)
-								.enter()
-								.append("rect")
-								.attr("class","bar")
-								.attr("x",function(d,i){
-		                                return navXScale(i+main['x0']+1)-navBarWidth/2;
-		                            })
-		                        .attr("y",function(d){
-		                                return navYScale(100*d["saviorMins"]/d["totalMins"]);
-		                            })
-		                        .attr("width",navBarWidth)
-		                        .attr("height",function(d){
-		                                return navYScale(0)-navYScale(100*d["saviorMins"]/d["totalMins"]);
-		                            })
-		                        .attr("fill",function() {
-										return "blue";
-									})
+				var navFill = d3.svg.area()
+				    .x(function (d,i) { return navXScale(i+main['x0']+1); })
+				    .y0(nav['h'])
+				    .y1(function (d) { return navYScale(100*d["saviorMins"]/d["totalMins"]); });
+
+				var navLine = d3.svg.line()
+				    .x(function (d,i) { return navXScale(i+main['x0']+1); })
+				    .y(function (d) { return navYScale(100*d["saviorMins"]/d["totalMins"]); });
+
+				navChart.append('path')
+				    .attr('class', 'fill')
+				    .attr('d', navFill(teams));
+
+				navChart.append('path')
+				    .attr('class', 'line')
+				    .attr('d', navLine(teams));
 
 
 				/*~~~~~~~~   VIEW PORT   ~~~~~~~~~~*/          
