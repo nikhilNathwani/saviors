@@ -33,7 +33,7 @@
 
 
 				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
-				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':64, 'y0':0, 'yAxisLoc':0, 'yN':4000, 't':5, 'xTitle':50, 'yTitle':50}
+				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':64, 'y0':0, 'yAxisLoc':0, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
 
 				//Create SVG element
 				var chart= chartsSVG.append("svg")
@@ -97,7 +97,7 @@
 						  .attr('class', 'd3-tip')
 						  .offset([-10, 0])
 						  .html(function(d) {
-						    return "<p>2014 " + d.team + "</p> <p>Savior playoff minutes: <span style='color:red'>" + d.combinedMins + "</span></p> <p>Savior win shares: <span style='color:red'>" + d.combinedWS + "</span></p> <p> Click to see " + d.team+ "\'s <span style='color:red'>" + d["saviors"].length + "</span> saviors</p>";
+						    return "<p>2014 " + d.team + "</p> <p>Savior playoff minutes: <span style='color:red'>" + d.saviorMins + "</span></p> <p>Savior win shares: <span style='color:red'>" + d.saviorWS + "</span></p> <p> Click to see " + d.team+ "\'s <span style='color:red'>" + d["saviors"].length + "</span> saviors</p>";
 						  })
 				chart.call(tip)
 										
@@ -111,11 +111,11 @@
 	                                return xScale(i+main['x0']+1)-barWidth/2;
 	                            })
 	                        .attr("y",function(d){
-	                                return yScale(d["combinedMins"]);
+	                                return yScale(100*d["saviorMins"]/d["totalMins"]);
 	                            })
 	                        .attr("width", main['w']/(totalTeams+2))
 	                        .attr("height",function(d){
-	                                return yScale(0)-yScale(d["combinedMins"]);
+	                                return yScale(0)-yScale(100*d["saviorMins"]/d["totalMins"]);
 	                            })
 	                        .attr("fill","green")
 	                        .on('click',function(d,i) {
@@ -164,11 +164,11 @@
 		                                return navXScale(i+main['x0']+1)-navBarWidth/2;
 		                            })
 		                        .attr("y",function(d){
-		                                return navYScale(d["combinedMins"]);
+		                                return navYScale(100*d["saviorMins"]/d["totalMins"]);
 		                            })
 		                        .attr("width",navBarWidth)
 		                        .attr("height",function(d){
-		                                return navYScale(0)-navYScale(d["combinedMins"]);
+		                                return navYScale(0)-navYScale(100*d["saviorMins"]/d["totalMins"]);
 		                            })
 		                        .attr("fill",function() {
 										return "blue";

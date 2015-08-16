@@ -14,7 +14,7 @@ from scrape import *
 
 #TO DO:
 #---create dict of # playoff wins needed to win a championship in a
-#   given year, and divide d["combinedWS"] in genChampDict by that 
+#   given year, and divide d["saviorWS"] in genChampDict by that 
 #   number to get a WS percentage 
 #---get player's jersey numbers
 #---get team's color
@@ -62,8 +62,10 @@ def genChampDict(teamLink):
 	d['year']= yearFromURL(teamLink)
 	d['link']= teamLink
 	d["saviors"]= [genPlayerDict(pl,yearFromURL(teamLink)) for pl in getSaviors(teamLink)]
-	d["combinedMins"]= reduce(lambda x,y: x+y, [x['totalPlayoffMins'] for x in d['saviors']])
-	d["combinedWS"]= round(reduce(lambda x,y: x+y, [x['winShares'] for x in d['saviors']]),1)
+	d["totalMins"]= getTeamPlayoffMins(teamLink)
+	d["totalWS"]
+	d["saviorMins"]= reduce(lambda x,y: x+y, [x['totalPlayoffMins'] for x in d['saviors']])
+	d["saviorWS"]= round(reduce(lambda x,y: x+y, [x['winShares'] for x in d['saviors']]),1)
 	print d
 	return d
 
