@@ -80,8 +80,8 @@ def isSavior(playerLink,teamLink):
 
 #returns list of players on championship team X that were drafted by X
 def getSaviors(teamLink):
-	roster= [d["link"] for d in getPlayersOnTeam(teamLink)]
-	saviors= [player for player in roster if isSavior(player,teamLink)]
+	roster= getPlayersOnTeam(teamLink)
+	saviors= [player for player in roster if isSavior(player["link"],teamLink)]
 	return saviors
 
 

@@ -20,13 +20,11 @@ from scrape import *
 #---get team's color
 
 
-def genPlayerDict(playerLink,year):
+def genPlayerDict(player,year):
+	playerLink= player["link"]
 	soup= grabSiteData("http://www.basketball-reference.com"+playerLink)
-	d={}
-
-	#header div from which name and jerseyNum can be found
-	header= soup.find("div",{"id":"info_box"})
-	name= header.find("h1").text
+	d= player
+	
 	d['totalPlayoffMins']= 0
 	d['games']= 0
 	d['minsPerGame']= 0.0
