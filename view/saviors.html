@@ -43,7 +43,89 @@
 
 
 				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
+
+				var extrema= {'max':{'mins':100,'ws':100,'count':15}, 'min':{'mins':0,'ws':0,'count':0}}
+				var numerator= {'mins':'saviorMins','ws':'saviorWS','count':'totalSavs'}
+				var denominator= {'mins':'totalMins','ws':'totalWins','count':1}
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
+
+
+				//metric is mins, ws, or count
+				function setGraph(metric) {
+					//set main's boundaries appropriately
+					main['y0']= extrema['min'][metric]
+					main['xAxisLoc']= extrema['min'][metric]
+					main['yN']= extrema['max'][metric]
+
+					//redefine main yScale and yAxis
+					yScale = d3.scale.linear()
+								.domain([main['y0'], main['yN']])
+								.range([main['h'],0]);
+
+					yAxis = d3.svg.axis()
+								.scale(yScale)
+								.ticks(main['t'])
+								.orient("left")
+								.tickFormat(d3.format("d"));
+
+					//Adjust chart background rect
+					d3.select("#backgroundRect")
+						  .attr("y", yScale(main['yN']))
+
+					//reset horizontal line dividers on chart background
+					lines= horizontals.selectAll("line")
+							.data(yAxis.scale().ticks(main['t'])) //a line corresp. to every tick
+					lines.exit().remove()
+					lines.enter()
+							.append("line")
+							.attr("x1", xScale(main['x0']))
+							.attr("x2", xScale(main['xN']))
+							.attr("y1",function(d) {
+								return yScale(d);
+							})
+							.attr("y2",function(d) {
+								return yScale(d);
+							})
+
+					//Drawing the axes
+					chart.append("g")
+							.attr("class", "axis")
+							.attr("id","xAxis")
+							.attr("transform", "translate("+0+"," + yScale(main['xAxisLoc']) + ")")
+							.call(xAxis);
+					chart.append("g")
+							.attr("class", "axis")
+							.attr("id","yAxis")
+							.attr("transform", "translate("+ xScale(main['yAxisLoc']) +"," + 0 + ")")
+							.call(yAxis);	
+
+					//adjust bar heights
+					d3.selectAll("rect.mainBar")
+						.transition().delay(100)
+						.attr("y",function(d){
+	                                return yScale(100*d[numerator[metric]]/d[denominator[metric]]);
+	                            })
+						.attr("height",function(d){
+	                                return yScale(0)-yScale(100*d[numerator[metric]]/d[denominator[metric]]);
+	                            })
+
+					//redefine nav yScale and yAxis
+					navYScale = d3.scale.linear()
+					        		.domain([main['y0'], main['yN']])
+									.range([nav['h'],navMargin.top]);
+
+					//reset nav chart fill and line and redraw them
+					navFill.y1(function (d) { return navYScale(100*d[numerator[metric]]/d[denominator[metric]]); });
+					navLine.y(function (d) { return navYScale(100*d[numerator[metric]]/d[denominator[metric]]); });
+
+					navChart.select('path.fill')
+				    		.attr('d', navFill(teams));
+					navChart.select('path.line')
+					    .attr('d', navLine(teams));
+
+				}
+
+				
 
 				//Create SVG element
 				var chart= chartsSVG.append("svg")
@@ -52,16 +134,15 @@
 							.append('g')
     						.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-				//Defining the scales and axes
+				//Defining the scales
 				var xScale = d3.scale.linear()
 								.domain([main['x0'], main['xN']])
-								.range([0, main['w']]);		  
+								.range([0, main['w']]);		 
 				var yScale = d3.scale.linear()
-								.domain([main['y0'], main['yN']])
-								.range([main['h'],0]);
+									.domain([main['y0'], main['yN']])
+									.range([main['h'],0]);
 
-
-
+				
 				var chartArea = chart.append('g')
 					    .attr('clip-path', 'url(#chartAreaClip)');
 
@@ -129,7 +210,10 @@
 						    return "<p>" + (i+main['x0']) + " " + d.team + "</p> <p>Savior playoff mins %: <span style='color:red'>" + parseFloat(Math.round((100*d.saviorMins/d.totalMins)*10)/10).toFixed(1) + "</span></p> <p>Savior win share %: <span style='color:red'>" + parseFloat(Math.min(100,Math.round((100*d.saviorWS/d.totalWins)*10)/10)).toFixed(1) + "</span></p> <p> Click to see " + d.team+ "\'s <span style='color:red'>" + d["saviors"].length + "</span> saviors</p>";
 						  })
 				chart.call(tip)
-										
+						
+				numer= numerator["mins"]
+				denom= denominator["mins"]
+
 				var barWidth= main['w']/(totalTeams+2)
 				var bars= chartArea.selectAll("rect.mainBar")
 							.data(teams)
@@ -140,11 +224,11 @@
 	                                return xScale(i+main['x0'])-barWidth/2;
 	                            })
 	                        .attr("y",function(d){
-	                                return yScale(100*d["saviorMins"]/d["totalMins"]);
+	                                return yScale(100*d[numer]/d[denom]);
 	                            })
 	                        .attr("width", barWidth)
 	                        .attr("height",function(d){
-	                                return yScale(0)-yScale(100*d["saviorMins"]/d["totalMins"]);
+	                                return yScale(0)-yScale(100*d[numer]/d[denom]);
 	                            })
 	                        .attr("fill",function(d) {
 	                        	if (d["team"] in colors) {
@@ -164,7 +248,7 @@
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
 				var navMargin = {top: 20, right: 20, bottom: 20, left: 80}
 				var navBarWidth= 20
-				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 'x0':0, 'xAxisLoc':0, 'xN':64, 'y0':0, 'yAxisLoc':0, 'yN':15, 't':15}
+				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 't':15}
 
 
 				var navChart= chartsSVG.append("svg") 
@@ -196,11 +280,11 @@
 				var navFill = d3.svg.area()
 				    .x(function (d,i) { return navXScale(i+main['x0']); })
 				    .y0(nav['h'])
-				    .y1(function (d) { return navYScale(100*d["saviorMins"]/d["totalMins"]); });
+				    .y1(function (d) { return navYScale(100*d[numer]/d[denom]); });
 
 				var navLine = d3.svg.line()
 				    .x(function (d,i) { return navXScale(i+main['x0']); })
-				    .y(function (d) { return navYScale(100*d["saviorMins"]/d["totalMins"]); });
+				    .y(function (d) { return navYScale(100*d[numer]/d[denom]); });
 
 				navChart.append('path')
 				    .attr('class', 'fill')
@@ -210,6 +294,7 @@
 				    .attr('class', 'line')
 				    .attr('d', navLine(teams));
 
+				setGraph('mins');
 
 				/*~~~~~~~~   VIEW PORT   ~~~~~~~~~~*/          
 				var viewport = d3.svg.brush()

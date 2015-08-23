@@ -32,7 +32,6 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
     jers.each(function(d,i) {
         x= t + (i%n)*(jers_w+t)
         y= topMargin + Math.floor(i/n)*(jers_h+t)
-        console.log("PERUMAL NXY",n,x,y)
         createJersey(d3.select(this),x,y,chosenTeam,d,i)
     })
 
@@ -40,7 +39,6 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
 
 function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
     var name= player.lastName;
-    console.log(name)
     var number= player.jerseyNum;
 
     //SVG in which the jersey lives
