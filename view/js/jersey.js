@@ -39,13 +39,15 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
 
 function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
     var name= player.lastName;
-    var number= player.jerseyNum;
+    var dash= player.jerseyNum.indexOf('-')
+    var number= dash == -1  ? player.jerseyNum : player.jerseyNum.substring(dash+1);
+    number= number=='' ? "n/a" : number
 
     //SVG in which the jersey lives
     jerseySVG.attr("x",x)
-	            .attr("y",y)
-	            .attr("width",jers_w)
-	            .attr("height",jers_h)
+                .attr("y",y)
+                .attr("width",jers_w)
+                .attr("height",jers_h)
 
     //Scale everything to the desired amount
     var g= jerseySVG.append("g")
@@ -93,6 +95,8 @@ function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,
             .attr("text-anchor","left")
             .attr("dominant-baseline","hanging")
             .text(value);
+
+    console.log('VALUE',value);
     
     var tBox= document.getElementById(value).getBBox()
     var oBox= document.getElementById("outline").getBBox()
