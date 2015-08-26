@@ -249,17 +249,47 @@
 
 				
 				/*~~~~~~~~   TOGGLE BUTTONS   ~~~~~~~~~~*/
-				var buttonGroups= chartArea.selectAll("g.toggle")
+				var toggleGroup= chartArea.append("g")
+										.attr("id","toggle")
+
+				var defaultColor= "#AAAAAA"
+				var hoverColor= "#0000ff"
+				var pressedColor= "#000077"
+				
+				var buttons= toggleGroup.selectAll("g.button")
 										.data(Object.keys(numerator))
 										.enter()
 										.append("g")
-										.attr("class","toggle")
+										.attr("class","button")
 										.style("cursor","pointer")
 										.on("click",function(d) {
 											setGraph(d); 
+											updateButtonColors(d3.select(this), d3.select(this.parentNode))
+										})
+										.on("mouseover", function() {
+											if (d3.select(this).select("rect").attr("fill") != pressedColor) {
+												d3.select(this)
+													.select("rect")
+													.attr("fill",hoverColor);
+											}
+										})
+										.on("mouseout", function() {
+											if (d3.select(this).select("rect").attr("fill") != pressedColor) {
+												d3.select(this)
+													.select("rect")
+													.attr("fill",defaultColor);
+											}
 										})
 
-				var buttons= buttonGroups.append("rect")
+				function updateButtonColors(button, parent) {
+					parent.selectAll("rect")
+							.attr("fill",defaultColor)
+
+					button.select("rect")
+							.attr("fill",pressedColor)
+				}
+
+				var buttonRects= buttons.append("rect")
 										.attr("height",25)
 										.attr("width",40)
 										.attr("x",function(d,i) {
@@ -268,11 +298,12 @@
 										.attr("y",10)
 										.attr("rx",5)
 										.attr("ry",5)
-										.attr("fill","#AAAAAA")
+										.attr("fill",defaultColor)
+
 
 				var icons= {"mins":"\uf017","ws":"\uf200","count":"\uf183"}
 
-				var buttonsText= buttonGroups.append("text")
+				var buttonsText= buttons.append("text")
 											.attr("font-family","FontAwesome")
 											.attr("x",function(d,i) {
 												return main["w"] - 5 - (Object.keys(numerator).length - i)*45 + 20;
