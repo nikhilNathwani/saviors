@@ -268,6 +268,10 @@
 										.on("click",function(d) {
 											setGraph(d); 
 											updateButtonColors(d3.select(this), d3.select(this.parentNode))
+											if(!viewport.empty()) {
+												chart.select("g#yAxis")
+													.attr("transform", "transform", "translate("+ xScale(viewport.extent()[0]) +"," + 0 + ")");
+											}
 										})
 										.on("mouseover", function() {
 											if (d3.select(this).select("rect").attr("fill") != pressedColor) {
@@ -383,9 +387,18 @@
 				    .x(navXScale)
 				    .on("brush", function () {
 				        xScale.domain(viewport.empty() ? navXScale.domain() : viewport.extent());
+				        chart.select("g#yAxis")
+								.attr("transform", function() {
+									if(viewport.empty()) {
+										return "translate("+ xScale(main['yAxisLoc']) +"," + 0 + ")";
+									}
+									else {
+										return "transform", "translate("+ xScale(viewport.extent()[0]) +"," + 0 + ")";
+									}
+								});
 				        chart.selectAll("rect.mainBar")
 					        .attr("width", function() {
-					        	if(viewport.extent()[1]-viewport.extent()[0] ==0) {
+					        	if(viewport.empty()) {
 					        		return main['w']/(totalTeams+2);
 					        	}
 					        	else {
