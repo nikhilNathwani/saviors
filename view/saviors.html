@@ -7,6 +7,7 @@
         <link type="text/css" rel="stylesheet" href="style/tooltip.css" />
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <script src="js/jersey.js"></script>
     </head>
     <body>
@@ -253,17 +254,36 @@
 										.enter()
 										.append("g")
 										.attr("class","toggle")
+										.style("cursor","pointer")
 										.on("click",function(d) {
 											setGraph(d); 
 										})
 
 				var buttons= buttonGroups.append("rect")
-										.attr("height",20)
-										.attr("width",20)
+										.attr("height",25)
+										.attr("width",40)
 										.attr("x",function(d,i) {
-											return main["w"] - (Object.keys(numerator).length - i)*40;
+											return main["w"] - 5 - (Object.keys(numerator).length - i)*45;
 										})
-										.attr("y",20)
+										.attr("y",10)
+										.attr("rx",5)
+										.attr("ry",5)
+										.attr("fill","#AAAAAA")
+
+				var icons= {"mins":"\uf017","ws":"\uf200","count":"\uf183"}
+
+				var buttonsText= buttonGroups.append("text")
+											.attr("font-family","FontAwesome")
+											.attr("x",function(d,i) {
+												return main["w"] - 5 - (Object.keys(numerator).length - i)*45 + 20;
+											})
+											.attr("y",10+12.5)
+											.attr("text-anchor","middle")
+											.attr("dominant-baseline","central")
+											.attr("fill","white")
+											.text(function(d) {
+												return icons[d];
+											})
 
 
 
