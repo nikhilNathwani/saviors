@@ -54,6 +54,7 @@ def genChampDict(teamLink):
 	d['link']= teamLink
 	d["saviors"]= [genPlayerDict(pl,yearFromURL(teamLink)) for pl in getSaviors(teamLink)]
 	mw= getTeamPlayoffMinsAndWins(teamLink)
+	d['totalSavs']= len(d["saviors"])
 	d["totalMins"]= mw["mins"]
 	d["totalWins"]= mw["wins"]
 	d["saviorMins"]= reduce(lambda x,y: x+y, [x['totalPlayoffMins'] for x in d['saviors']])
