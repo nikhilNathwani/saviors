@@ -95,15 +95,12 @@ function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,
             .attr("text-anchor","left")
             .attr("dominant-baseline","hanging")
             .text(value);
-
-    console.log('VALUE',value);
     
     var tBox= document.getElementById(value).getBBox()
     var oBox= document.getElementById("outline").getBBox()
 
     //Set text's SVG to be exactly the size of the text's bounding box
     svgInner.attr("width", function() {
-        console.log("Text box: w=",tBox.width,"h=",tBox.height,"x=",tBox.x,"y=",tBox.y)
         return tBox.width * widthScale;
     })
     svgInner.attr("height", function() {
@@ -113,7 +110,6 @@ function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,
     
     //Place SVG (i.e. the text() right where I want it on the jersey
     svgInner.attr("x", function() {
-        console.log("Jersey box: w=",oBox.width,"h=",oBox.height,"x=",oBox.x,"y=",oBox.y)
         var oX= oBox.x + xTrans;
         var oW= oBox.width * widthScale;
         var nW= d3.select(this).attr("width")
@@ -125,7 +121,6 @@ function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,
         var oY= oBox.y + yTrans;
         var oH= oBox.height * heightScale;
         var nH= d3.select(this).attr("height")
-        console.log(oY - (nH-oH)/2)
         return oY - (nH-oH)/2;
     })
     
@@ -156,7 +151,6 @@ function setClothesline(chosenTeam,year,stat) {
             var dummyOppData= Array.apply(null, new Array(players["items"].length)).map(String.prototype.valueOf,"");
             setRowsInPlayerComp("Click on a team","",dummyOppData,stat,!isNeighbor);
         }*/
-        console.log("CLOTH",players["items"])
         clothesLine.selectAll("svg")
                 .data(players["items"])
                 .enter()
