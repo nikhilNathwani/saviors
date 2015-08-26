@@ -48,6 +48,8 @@
 				var extrema= {'max':{'mins':100,'ws':100,'count':12}, 'min':{'mins':0,'ws':0,'count':0}}
 				var numerator= {'mins':'saviorMins','ws':'saviorWS','count':'totalSavs'}
 				var denominator= {'mins':'totalMins','ws':'totalWins','count':1}
+				var defaultMetric= "mins"
+
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
 
 
@@ -213,8 +215,8 @@
 						  })
 				chart.call(tip)
 						
-				numer= numerator["mins"]
-				denom= denominator["mins"]
+				var numer= numerator[defaultMetric]
+				var denom= denominator[defaultMetric]
 
 				var barWidth= main['w']/(totalTeams+2)
 				var bars= chartArea.selectAll("rect.mainBar")
@@ -255,12 +257,13 @@
 				var defaultColor= "#AAAAAA"
 				var hoverColor= "#0000ff"
 				var pressedColor= "#000077"
-				
+
 				var buttons= toggleGroup.selectAll("g.button")
 										.data(Object.keys(numerator))
 										.enter()
 										.append("g")
 										.attr("class","button")
+										.attr("id",function(d){return d;})
 										.style("cursor","pointer")
 										.on("click",function(d) {
 											setGraph(d); 
@@ -299,6 +302,11 @@
 										.attr("rx",5)
 										.attr("ry",5)
 										.attr("fill",defaultColor)
+
+				//press mins button by default (or whatever I choose the default metric to be)
+				toggleGroup.select("g#"+defaultMetric)
+							.select("rect")
+							.attr("fill",pressedColor)
 
 
 				var icons= {"mins":"\uf017","ws":"\uf200","count":"\uf183"}
