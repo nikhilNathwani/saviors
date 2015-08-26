@@ -7,7 +7,7 @@
         <link type="text/css" rel="stylesheet" href="style/tooltip.css" />
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-        <script src="scripts/jersey.js"></script>
+        <script src="js/jersey.js"></script>
     </head>
     <body>
 		
@@ -44,7 +44,7 @@
 
 				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
 
-				var extrema= {'max':{'mins':100,'ws':100,'count':15}, 'min':{'mins':0,'ws':0,'count':0}}
+				var extrema= {'max':{'mins':100,'ws':100,'count':12}, 'min':{'mins':0,'ws':0,'count':0}}
 				var numerator= {'mins':'saviorMins','ws':'saviorWS','count':'totalSavs'}
 				var denominator= {'mins':'totalMins','ws':'totalWins','count':1}
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
@@ -58,15 +58,12 @@
 					main['yN']= extrema['max'][metric]
 
 					//redefine main yScale and yAxis
-					yScale = d3.scale.linear()
-								.domain([main['y0'], main['yN']])
-								.range([main['h'],0]);
+					yScale.domain([main['y0'], main['yN']])
 
-					yAxis = d3.svg.axis()
-								.scale(yScale)
-								.ticks(main['t'])
-								.orient("left")
-								.tickFormat(d3.format("d"));
+					yAxis.scale(yScale)
+							.ticks(main['t'])
+							.orient("left")
+							.tickFormat(d3.format("d"));
 
 					//Adjust chart background rect
 					d3.select("#backgroundRect")
@@ -88,14 +85,10 @@
 							})
 
 					//Drawing the axes
-					chart.append("g")
-							.attr("class", "axis")
-							.attr("id","xAxis")
+					chart.select("g#xAxis")
 							.attr("transform", "translate("+0+"," + yScale(main['xAxisLoc']) + ")")
 							.call(xAxis);
-					chart.append("g")
-							.attr("class", "axis")
-							.attr("id","yAxis")
+					chart.select("g#yAxis")
 							.attr("transform", "translate("+ xScale(main['yAxisLoc']) +"," + 0 + ")")
 							.call(yAxis);	
 
@@ -103,25 +96,33 @@
 					d3.selectAll("rect.mainBar")
 						.transition().delay(100)
 						.attr("y",function(d){
-	                                return yScale(100*d[numerator[metric]]/d[denominator[metric]]);
-	                            })
+							x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+                            return yScale(100*x);
+                        })
 						.attr("height",function(d){
-	                                return yScale(0)-yScale(100*d[numerator[metric]]/d[denominator[metric]]);
-	                            })
+							x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+                            return yScale(0)-yScale(100*x);
+                        })
 
-					//redefine nav yScale and yAxis
-					navYScale = d3.scale.linear()
-					        		.domain([main['y0'], main['yN']])
-									.range([nav['h'],navMargin.top]);
+					//redefine nav yScale
+					navYScale.domain([main['y0'], main['yN']])
 
 					//reset nav chart fill and line and redraw them
-					navFill.y1(function (d) { return navYScale(100*d[numerator[metric]]/d[denominator[metric]]); });
-					navLine.y(function (d) { return navYScale(100*d[numerator[metric]]/d[denominator[metric]]); });
+					navFill.y1(function (d) {
+						x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+						return navYScale(100*x); 
+					});
+					navLine.y(function (d) { 
+						x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+						return navYScale(100*x); 
+					});
 
 					navChart.select('path.fill')
+							.transition().delay(100)
 				    		.attr('d', navFill(teams));
 					navChart.select('path.line')
-					    .attr('d', navLine(teams));
+					    	.transition().delay(100)
+					    	.attr('d', navLine(teams));
 
 				}
 
@@ -243,7 +244,29 @@
       						})
 	                        .on('mouseover', tip.show)
       						.on('mouseout', tip.hide)
+
+
 				
+				/*~~~~~~~~   TOGGLE BUTTONS   ~~~~~~~~~~*/
+				var buttonGroups= chartArea.selectAll("g.toggle")
+										.data(Object.keys(numerator))
+										.enter()
+										.append("g")
+										.attr("class","toggle")
+										.on("click",function(d) {
+											setGraph(d); 
+										})
+
+				var buttons= buttonGroups.append("rect")
+										.attr("height",20)
+										.attr("width",20)
+										.attr("x",function(d,i) {
+											return main["w"] - (Object.keys(numerator).length - i)*40;
+										})
+										.attr("y",20)
+
+
+
 
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
 				var navMargin = {top: 20, right: 20, bottom: 20, left: 80}
@@ -294,7 +317,7 @@
 				    .attr('class', 'line')
 				    .attr('d', navLine(teams));
 
-				setGraph('mins');
+				setGraph('count');
 
 				/*~~~~~~~~   VIEW PORT   ~~~~~~~~~~*/          
 				var viewport = d3.svg.brush()
@@ -311,7 +334,6 @@
 					        	}
 					        })
 					        .attr("x", function(d,i) { 
-					        	console.log(xScale(i+main['x0'])-d3.select(this).attr("width")/2)
 					        	return xScale(i+main['x0'])-d3.select(this).attr("width")/2;
 					        })
     					chart.select('#xAxis').call(xAxis);
