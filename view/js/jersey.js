@@ -75,6 +75,17 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
     scaledText(g,chosenTeam,"name",name,24,-40,35,0.9,0.2)
     scaledText(g,chosenTeam,"number",number,64,-40,70,0.9,0.3)
     g.transition().delay(100*num).attr("opacity",1)
+
+    //Tooltop for bars
+    var jerseyTip = d3.tip()
+              .attr('class', 'd3-tip')
+              .offset([-10, 0])
+              .html(function(d,i) {
+                return "<p>Player: <span style='color:red'>" + d['fullName'] + "</span></p> <p>Playoff mins per game: <span style='color:red'>" + d['minsPerGame'] + "</span></p> <p>Playoff win shares: <span style='color:red'>" + d['winShares'] + "</p>";
+              })
+    g.call(jerseyTip)
+    g.on('mouseenter', jerseyTip.show)
+    g.on('mouseleave', jerseyTip.hide)
 }
 
 function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,heightScale) {
