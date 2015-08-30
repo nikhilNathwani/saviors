@@ -62,8 +62,8 @@ def getTeamPlayoffMinsAndWins(teamLink):
 	info= teamSite.find("div",{"id":"info_box"}).findAll("p")[-1]
 	playoffSummary= info.text
 	dashes= [m.start() for m in re.finditer('-',playoffSummary)]
-	totalGames= 0
-	wins= 0
+	totalGames= 0 if yearFromURL(teamLink) != 1954 else 3
+	wins= 0 if yearFromURL(teamLink) != 1954 else 3
 	for d in dashes:
 		wins += int(playoffSummary[d-1])
 		totalGames += int(playoffSummary[d-1])
