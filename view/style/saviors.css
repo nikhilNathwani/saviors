@@ -18,8 +18,8 @@ div#chart, div#jerseys{
 }
 
 #lines {
-	stroke-width: 0.5;
-	stroke: #ffffff;
+	stroke-width: 1;
+	stroke: #eeeeee;
 }
 
 #backgroundRect {

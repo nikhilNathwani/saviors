@@ -74,16 +74,15 @@
 							.orient("left")
 							.tickFormat(d3.format("d"));
 
+					//console.log("g",yAxis.scale().ticks(main['t']),yScale(yAxis.scale().ticks(main['t'])[2]))
+
 					//Adjust chart background rect
 					d3.select("#backgroundRect")
 						  .attr("y", yScale(main['yN']))
 
 					//reset horizontal line dividers on chart background
-					lines= horizontals.selectAll("line")
+					horizontals.selectAll("line")
 							.data(yAxis.scale().ticks(main['t'])) //a line corresp. to every tick
-					lines.exit().remove()
-					lines.enter()
-							.append("line")
 							.attr("x1", xScale(main['x0']))
 							.attr("x2", xScale(main['xN']))
 							.attr("y1",function(d) {
