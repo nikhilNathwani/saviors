@@ -32,7 +32,7 @@
             	var totalTeams= teams.length;
             	var w= 800;
             	var h= 350;
-            	var navH= 150;
+            	var navH= 200;
 
             	var margin = {top: 100, right: 20, bottom: 20, left:80}
 
@@ -48,6 +48,7 @@
 				var extrema= {'max':{'mins':100,'ws':100,'count':12}, 'min':{'mins':0,'ws':0,'count':0}}
 				var numerator= {'mins':'saviorMins','ws':'saviorWS','count':'totalSavs'}
 				var denominator= {'mins':'totalMins','ws':'totalWins','count':1}
+				var yLabelText= {'mins':'Minutes %','ws':'Win Share %','count':"Number of Saviors"}
 				var defaultMetric= "mins"
 
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
@@ -94,6 +95,9 @@
 					chart.select("g#yAxis")
 							.attr("transform", "translate("+ xScale(main['yAxisLoc']) +"," + 0 + ")")
 							.call(yAxis);	
+
+					//Rewriting yAxis label
+					yLabel.text(yLabelText[metric])		
 
 					//adjust bar heights
 					d3.selectAll("rect.mainBar")
@@ -204,7 +208,39 @@
 						.attr("id","yAxis")
 						.attr("transform", "translate("+ xScale(main['yAxisLoc']) +"," + 0 + ")")
 						.call(yAxis);	
-				
+
+				//Writing title and axis labels
+				var titleSize= margin.top/4
+				var axisLabelSize= margin.left/5
+				var title= chartsSVG.append("text")
+								  .attr("class","label")
+								  .attr("id","title")
+								  .attr("x",margin.left+main["w"]/2)
+								  .attr("y",margin.top/1.5)
+								  .attr("font-size",titleSize)
+								  .attr("text-anchor","middle")
+								  .attr("dominant-baseline","central")
+								  .text("Savior Playoff Contribution")
+				var xLabel= chartsSVG.append("text")
+								  .attr("class","label")
+								  .attr("id","title")
+								  .attr("x",margin.left+main["w"]/2)
+								  .attr("y",h+navH - margin.bottom)
+								  .attr("font-size",axisLabelSize)
+								  .attr("text-anchor","middle")
+								  .attr("dominant-baseline","central")
+								  .text("Year")
+				var yLabel= chartsSVG.append("text")
+								  .attr("class","label")
+								  .attr("id","title")
+								  .attr("x",margin.left/2.5)
+								  .attr("y",margin.top+main["h"]/2)
+								  .attr("font-size",axisLabelSize)
+								  .attr("text-anchor","middle")
+								  .attr("dominant-baseline","central")
+								  .attr("transform","rotate(-90 "+(margin.left/2.5)+","+(margin.top+main["h"]/2)+")")
+								  .text("Playoff Minute %")
+						
 
 				//Tooltop for bars
 				var tip = d3.tip()
@@ -332,7 +368,7 @@
 
 
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
-				var navMargin = {top: 20, right: 20, bottom: 20, left: 80}
+				var navMargin = {top: 25, right: 20, bottom: 75, left: 80}
 				var navBarWidth= 20
 				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 't':15}
 
@@ -380,7 +416,7 @@
 				    .attr('class', 'line')
 				    .attr('d', navLine(teams));
 
-				setGraph('count');
+				setGraph(defaultMetric);
 
 				/*~~~~~~~~   VIEW PORT   ~~~~~~~~~~*/          
 				var viewport = d3.svg.brush()
