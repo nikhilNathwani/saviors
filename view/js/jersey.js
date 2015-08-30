@@ -81,7 +81,7 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
               .attr('class', 'd3-tip')
               .offset([-10, 0])
               .html(function(d,i) {
-                return "<p>Player: <span style='color:red'>" + d['fullName'] + "</span></p> <p>Playoff mins per game: <span style='color:red'>" + d['minsPerGame'] + "</span></p> <p>Playoff win shares: <span style='color:red'>" + d['winShares'] + "</p>";
+                return "<p>Player: <span style='color:red'>" + d['fullName'] + "</span></p> <p>Playoff mins per game: <span style='color:red'>" + parseFloat(d['minsPerGame']).toFixed(1) + "</span></p> <p>Playoff win shares: <span style='color:red'>" + parseFloat(d['winShares']).toFixed(1) + "</p>";
               })
     g.call(jerseyTip)
     g.on('mouseenter', jerseyTip.show)
