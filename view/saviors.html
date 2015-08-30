@@ -45,14 +45,19 @@
 
 				/*~~~~~~~~   MAIN CHART   ~~~~~~~~~~*/
 
-				var extrema= {'max':{'mins':100,'ws':100,'count':12}, 'min':{'mins':0,'ws':0,'count':0}}
+				var extrema= {'max':{'mins':100,'ws':100,'count':8}, 'min':{'mins':0,'ws':0,'count':0}}
 				var numerator= {'mins':'saviorMins','ws':'saviorWS','count':'totalSavs'}
 				var denominator= {'mins':'totalMins','ws':'totalWins','count':1}
 				var yLabelText= {'mins':'Minutes %','ws':'Win Share %','count':"Number of Saviors"}
 				var defaultMetric= "mins"
+				var minSaviorMPG= 8.0
 
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
 
+
+				function savsWithEnoughMins(savs) {
+					return savs.filter(function(d) {return d['minsPerGame'] >= minSaviorMPG})
+				}
 
 				//metric is mins, ws, or count
 				function setGraph(metric) {
@@ -103,11 +108,11 @@
 					d3.selectAll("rect.mainBar")
 						.transition().delay(100)
 						.attr("y",function(d){
-							x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+							x= metric=='count' ? savsWithEnoughMins(d['saviors']).length/100 : d[numerator[metric]]/d[denominator[metric]]
                             return yScale(100*x);
                         })
 						.attr("height",function(d){
-							x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+							x= metric=='count' ? savsWithEnoughMins(d['saviors']).length/100 : d[numerator[metric]]/d[denominator[metric]]
                             return yScale(0)-yScale(100*x);
                         })
 
@@ -116,11 +121,11 @@
 
 					//reset nav chart fill and line and redraw them
 					navFill.y1(function (d) {
-						x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+						x= metric=='count' ? savsWithEnoughMins(d['saviors']).length/100 : d[numerator[metric]]/d[denominator[metric]]
 						return navYScale(100*x); 
 					});
 					navLine.y(function (d) { 
-						x= metric=='count' ? d['saviors'].length/100 : d[numerator[metric]]/d[denominator[metric]]
+						x= metric=='count' ? savsWithEnoughMins(d['saviors']).length/100 : d[numerator[metric]]/d[denominator[metric]]
 						return navYScale(100*x); 
 					});
 
@@ -279,7 +284,7 @@
 	                        	}
 	                        })
 	                        .on('click',function(d,i) {
-      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],d["saviors"]) 
+      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],savsWithEnoughMins(d["saviors"])) 
       						})
 	                        .on('mouseover', tip.show)
       						.on('mouseout', tip.hide)
