@@ -228,7 +228,7 @@
 								  .attr("y",h+navH - margin.bottom)
 								  .attr("font-size",axisLabelSize)
 								  .attr("text-anchor","middle")
-								  .attr("dominant-baseline","central")
+								  .attr("dominant-baseline","bottom")
 								  .text("Year")
 				var yLabel= chartsSVG.append("text")
 								  .attr("class","label")
@@ -368,7 +368,7 @@
 
 
 				/*~~~~~~~~   LOWER CHART   ~~~~~~~~~~*/
-				var navMargin = {top: 25, right: 20, bottom: 75, left: 80}
+				var navMargin = {top: 15, right: 20, bottom: 75, left: 80}
 				var navBarWidth= 20
 				var nav= {'w':w-navMargin.left-navMargin.right, 'h':navH-navMargin.top-navMargin.bottom, 't':15}
 
