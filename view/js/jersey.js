@@ -15,7 +15,11 @@ var minMargin= 20;
 
 var tTop= 10;
 var t= 24;
-var tBot= 20;
+var tBot= 10;
+var tSub= 16;
+var tSubBot= 20;
+
+var tH= tTop+t+tBot+tSub+tSubBot;
 
 //Jersey dimensions
 var jers_w= 64;
@@ -25,7 +29,7 @@ var high_padY= 10;
 
 var subTop= 40;
 var sub= 14;
-var subBot= 30;
+var subBot= 20;
 
 var j_w= 48;
 var j_h= 75;
@@ -41,8 +45,10 @@ function savsWithEnoughMins(savs) {
     return savs.filter(function(d) {return d['minsPerGame'] >= minSaviorMPG})
 }
 
-function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
+function collectJerseys(containerSVG, w, h, chosenTeam, yr, gamesWon, saviors) {
 
+    containerSVG.select("#jersTitle").text(yr + " " + chosenTeam)
+    containerSVG.select("#gamesWon").text("Playoff games won: " + gamesWon)
     containerSVG.select("#subtitle").attr("opacity",0)
 
     var numSavs= saviors.length;
@@ -55,7 +61,7 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
 
     
     containerSVG.select("#subtitle")
-                .attr("y",(tTop+t+tBot) + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + subTop)
+                .attr("y",tH + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + subTop)
                 .transition().delay(200).attr("opacity",+(numLow>0))
 
 
@@ -79,7 +85,7 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
         console.log("S "+Math.floor(1+(numHigh-1)/nH)*(jers_h))
 
         x= mX + (ind[+isLow]%rowCount[+isLow])*(jers_w+(w-2*mX-(rowCount[+isLow]*jw[+isLow]))/(rowCount[+isLow]-1)) 
-        y= isLow ? (tTop+t+tBot) + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + (subTop+sub+subBot) + Math.floor(nL_i/nL)*(j_h+low_padY) : (tTop+t+tBot) + Math.floor(nH_i/nH)*(jers_h+high_padY)
+        y= isLow ? tH + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + (subTop+sub+subBot) + Math.floor(nL_i/nL)*(j_h+low_padY) : tH + Math.floor(nH_i/nH)*(jers_h+high_padY)
         console.log(d,d["fullName"],isLow,nH_i,nL_i,x,y)
         createJersey(d3.select(this),x,y,chosenTeam,d,i,0.8-(0.2*isLow))
 

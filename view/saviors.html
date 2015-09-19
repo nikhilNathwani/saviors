@@ -279,7 +279,7 @@
 	                        	}
 	                        })
 	                        .on('click',function(d,i) {
-      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],d["saviors"]) 
+      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],d["year"],d["totalWins"],d["saviors"]) 
       						})
 	                        .on('mouseover', tip.show)
       						.on('mouseout', tip.hide)
@@ -475,13 +475,25 @@
 									.attr('stroke',"#AAAAAA")
 									.attr('stroke-width',4)
 
+				//team name
 				var jersTitle= jerseySVG.append("text")
+										.attr("id","jersTitle")
 										.attr("x",jersSVG_w/2)
 										.attr("text-anchor","middle")
 										.attr("y",tTop)
 										.attr("dominant-baseline","hanging")
 										.attr("font-size",t)
 										.text("Saviors")
+				
+				//# playoff games chosen team won
+				jerseySVG.append("text")
+						.attr("id","gamesWon")
+						.attr("x",jersSVG_w/2)
+						.attr("text-anchor","middle")
+						.attr("y",tTop+t+tBot)
+						.attr("dominant-baseline","hanging")
+						.attr("font-size",tSub)
+						.text("Playoff games won: 0")
 
 				//subtitle for saviors that played too few minutes
 				jerseySVG.append("text")
