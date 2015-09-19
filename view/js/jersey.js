@@ -7,15 +7,58 @@ var colors= {"ATL":"#D21033", "BOS":"#05854C", "BRK":"#000000", "CHA":"#25799A",
                              "SEA":"#006031", "WSB":"#CC3300", "STL":"#C41E3A", "PHW":"#FFCC00", "SYR":"#030066", 
                              "MNL":"#6495ED"}
 
+var minSaviorMPG= 8;
+
 //Jersey container SVG vars
-topMargin= 20;
-minMargin= 20;
+var topMargin= 80;
+var minMargin= 20;
+
+var tTop= 10;
+var t= 24;
+var tBot= 20;
 
 //Jersey dimensions
 var jers_w= 64;
 var jers_h= 100;
 
+var high_padY= 10;
+
+var subTop= 40;
+var sub= 14;
+var subBot= 30;
+
+var j_w= 48;
+var j_h= 75;
+
+var low_padY= 40; 
+
+var mX= 20; 
+
+var nH= 4; //# of jerseys in high row
+var nL= 6; //# of jerseys in low row
+
+function savsWithEnoughMins(savs) {
+    return savs.filter(function(d) {return d['minsPerGame'] >= minSaviorMPG})
+}
+
 function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
+
+    containerSVG.select("#subtitle").attr("opacity",0)
+
+    var numSavs= saviors.length;
+    var highs= savsWithEnoughMins(saviors)
+    var numHigh= highs.length
+    var numLow= numSavs-numHigh;
+
+    var nH_i= 0; //running count of high-min saviors seen;
+    var nL_i= 0; //same as above but for low-min
+
+    
+    containerSVG.select("#subtitle")
+                .attr("y",(tTop+t+tBot) + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + subTop)
+                .transition().delay(200).attr("opacity",+(numLow>0))
+
+
     var jers= containerSVG.selectAll("svg#outer")
                             .data(saviors)
 
@@ -23,25 +66,36 @@ function collectJerseys(containerSVG, w, h, chosenTeam, saviors) {
     jers.enter().append("svg")
                 .attr("id","outer")
 
-    numJerseysInRow= Math.floor((w-minMargin)/(jers_w+minMargin))
-    n= numJerseysInRow
 
-    trueMargin= (w-(n*jers_w))/(n+1)
-    t= trueMargin
+    //trueMargin= (w-(nH*jers_w))/(nH+1)
+    //t= trueMargin
 
     jers.each(function(d,i) {
-        x= t + (i%n)*(jers_w+t)
-        y= topMargin + Math.floor(i/n)*(jers_h+t)
-        createJersey(d3.select(this),x,y,chosenTeam,d,i)
+        isLow= d['minsPerGame'] < minSaviorMPG;
+        ind= [nH_i,nL_i]
+        rowCount= [nH,nL]
+        jw= [jers_w,j_w]
+        
+        console.log("S "+Math.floor(1+(numHigh-1)/nH)*(jers_h))
+
+        x= mX + (ind[+isLow]%rowCount[+isLow])*(jers_w+(w-2*mX-(rowCount[+isLow]*jw[+isLow]))/(rowCount[+isLow]-1)) 
+        y= isLow ? (tTop+t+tBot) + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + (subTop+sub+subBot) + Math.floor(nL_i/nL)*(j_h+low_padY) : (tTop+t+tBot) + Math.floor(nH_i/nH)*(jers_h+high_padY)
+        console.log(d,d["fullName"],isLow,nH_i,nL_i,x,y)
+        createJersey(d3.select(this),x,y,chosenTeam,d,i,0.8-(0.2*isLow))
+
+        nH_i += (1-isLow);
+        nL_i += isLow;
     })
 
 }
 
-function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
+function createJersey(jerseySVG,x,y,chosenTeam,player,num,scale) {
     var name= player.lastName;
     var dash= player.jerseyNum.indexOf('-')
     var number= dash == -1  ? player.jerseyNum : player.jerseyNum.substring(dash+1);
     number= number=='' ? "n/a" : number
+
+    jerseySVG.selectAll("g").remove()
 
     //SVG in which the jersey lives
     jerseySVG.attr("x",x)
@@ -51,7 +105,7 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
 
     //Scale everything to the desired amount
     var g= jerseySVG.append("g")
-                    .attr("transform","scale(0.8)")
+                    .attr("transform","scale("+scale+")")
                     .attr("opacity",0)
 
     //Drawing the jersey outline           
@@ -74,7 +128,7 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num) {
                         .attr("d","M116.462,113.911V39.01c0,0-18.493-5.977-15.317-30.633c0,0-8.033-2.616-8.78-3.363S91.617,9.311,79.29,9.124h-1.305C65.656,9.311,65.656,4.268,64.909,5.015s-8.778,3.363-8.778,3.363C59.305,33.034,40.813,39.01,40.813,39.01v74.901C40.813,113.911,74.434,126.427,116.462,113.911z");
     scaledText(g,chosenTeam,"name",name,24,-40,35,0.9,0.2)
     scaledText(g,chosenTeam,"number",number,64,-40,70,0.9,0.3)
-    g.transition().delay(100*num).attr("opacity",1)
+    g.transition().delay(200).attr("opacity",1)
 
     //Tooltop for bars
     var jerseyTip = d3.tip()
@@ -153,21 +207,4 @@ function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,
     })
     
     svgInner.attr("preserveAspectRatio","xMidYMid meet")
-}
-
-function setClothesline(chosenTeam,year,stat) {
-    d3.json("http://localhost:5000/playersOfTeam/?team="+chosenTeam+"&year="+year+"&stat="+stat,function(players) {
-        //setJerseysInClothesline(chosenTeam,year,players["items"],stat,isNeighbor);
-        /*if(!isNeighbor){
-            var dummyOppData= Array.apply(null, new Array(players["items"].length)).map(String.prototype.valueOf,"");
-            setRowsInPlayerComp("Click on a team","",dummyOppData,stat,!isNeighbor);
-        }*/
-        clothesLine.selectAll("svg")
-                .data(players["items"])
-                .enter()
-                .append("svg")
-                .each(function(d,i){
-                    createJersey(d3.select(this),i*80 + 20,0,chosenTeam,d["name"],d["statValue"],i);
-                });     
-    });
 }

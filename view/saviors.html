@@ -48,17 +48,12 @@
 				var extrema= {'max':{'mins':100,'ws':100,'count':8}, 'min':{'mins':0,'ws':0,'count':0}}
 				var numerator= {'mins':'saviorMins','ws':'saviorWS','count':'totalSavs'}
 				var denominator= {'mins':'totalMins','ws':'totalWins','count':1}
-				var defaultMetric= "mins"
-				var minSaviorMPG= 8
+				var defaultMetric= "mins";
 				var yLabelText= {'mins':'Minutes %','ws':'Win Share %','count':"# Saviors with "+minSaviorMPG+"+ mpg"}
 
 
 				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
 
-
-				function savsWithEnoughMins(savs) {
-					return savs.filter(function(d) {return d['minsPerGame'] >= minSaviorMPG})
-				}
 
 				//metric is mins, ws, or count
 				function setGraph(metric) {
@@ -284,7 +279,7 @@
 	                        	}
 	                        })
 	                        .on('click',function(d,i) {
-      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],savsWithEnoughMins(d["saviors"])) 
+      							collectJerseys(jerseySVG,jersSVG_w,jersSVG_h,d["team"],d["saviors"]) 
       						})
 	                        .on('mouseover', tip.show)
       						.on('mouseout', tip.hide)
@@ -472,15 +467,32 @@
 								.attr("width",jersSVG_w)
 								.attr("height",jersSVG_h)    
 								.attr("y",margin.top)
-				
+
 				var container= jerseySVG.append("rect")
-									.attr('x',0)
-									.attr('y',0)
 									.attr('width',"100%")
 									.attr('height',"100%")
-									.attr('fill',"white")
+									.attr('fill',"#cceedd")
 									.attr('stroke',"#AAAAAA")
 									.attr('stroke-width',4)
+
+				var jersTitle= jerseySVG.append("text")
+										.attr("x",jersSVG_w/2)
+										.attr("text-anchor","middle")
+										.attr("y",tTop)
+										.attr("dominant-baseline","hanging")
+										.attr("font-size",t)
+										.text("Saviors")
+
+				//subtitle for saviors that played too few minutes
+				jerseySVG.append("text")
+						.attr("id","subtitle")
+						.attr("opacity",0)
+						.attr("x",jersSVG_w/2)
+						.attr("text-anchor","middle")
+						.attr("dominant-baseline","hanging")
+						.attr("font-size",sub)
+						.attr("fill","#888888")
+						.text("--- Saviors below this line played < " + minSaviorMPG + " mins per playoff game ---")
 
             });
         </script>
