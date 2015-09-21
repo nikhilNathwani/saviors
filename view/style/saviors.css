@@ -2,6 +2,14 @@ html,body {
 	font-family: sans-serif;
 }
 
+#vizTitle {
+    display: inline;
+}
+
+#fb {
+    margin-left: 20px;
+}
+
 div#chart, div#jerseys{
 	display: inline-block;
 }
