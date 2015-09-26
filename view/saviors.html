@@ -405,7 +405,7 @@
 
 				navChart.append('g')
 				    .attr('class', 'x axis')
-				    .attr('transform', 'translate(0,' + (nav['h']+1) + ')')
+				    .attr('transform', 'translate(0,' + (nav['h']+0.5) + ')')
 				    .call(navXAxis);
 
 				var navFill = d3.svg.area()
