@@ -18,7 +18,7 @@
 			<span class='st_facebook_hcount' id="fb" displayText='Facebook'></span>
 			<span class='st_twitter_hcount' id="twitter" displayText='Tweet'></span>
 			<p>
-				A <em>savior</em> is a player present during the championship run of the team that drafted him. One example of my concerning emotional investment in the NBA: it genuinely warms my heart when teams that "build through the draft" find success. So, I was curious to see what impact saviors have had on title runs throughout history. <strong>Play with the bar graph to gauge this impact, and use the line chart to zoom in on portions of said bar graph.</strong>
+				For lack of a less dramatic term, I use <em>savior</em> to mean a player present during the championship run of the team that drafted him. Since it genuinely warms my heart when teams that "build through the draft" find success, I was curious to see what impact saviors have had on title runs throughout history. <strong>Interact with the bar graph to gauge this impact, and use the line chart to zoom in on portions of said bar graph.</strong>
 			</p>
 		</div>
 		<div id="chart"></div>
@@ -491,6 +491,7 @@
 										.attr("y",tTop)
 										.attr("dominant-baseline","hanging")
 										.attr("font-size",t)
+										.attr("opacity",0)
 										.text("Saviors")
 				
 				//# playoff games chosen team won
@@ -501,6 +502,7 @@
 						.attr("y",tTop+t+tBot)
 						.attr("dominant-baseline","hanging")
 						.attr("font-size",tSub)
+						.attr("opacity",0)
 						.text("Playoff games won: 0")
 
 				//subtitle for saviors that played too few minutes

@@ -43,6 +43,8 @@ function savsWithEnoughMins(savs) {
 
 function collectJerseys(containerSVG, w, h, chosenTeam, yr, gamesWon, saviors) {
 
+    containerSVG.selectAll("text:not(#subtitle)").transition().delay(200).attr("opacity",1)
+
     containerSVG.select("#jersTitle").text(yr + " " + chosenTeam +"'s Saviors")
     containerSVG.select("#gamesWon").text("Playoff games won: " + gamesWon)
     containerSVG.select("#subtitle").attr("opacity",0)
