@@ -18,7 +18,7 @@
 			<span class='st_facebook_hcount' id="fb" displayText='Facebook'></span>
 			<span class='st_twitter_hcount' id="twitter" displayText='Tweet'></span>
 			<p>
-				For lack of a less dramatic term, I use <em>savior</em> to mean a player present during the championship run of the team that drafted him. Since it genuinely warms my heart when teams that "build through the draft" find success, I was curious to see what impact saviors have had on title runs throughout history. <strong>Interact with the bar graph to gauge this impact, and use the line chart to zoom in on portions of said bar graph.</strong>
+				For lack of a less dramatic term, I use <em>savior</em> to mean a player present during the championship run of the team that drafted him. Since it genuinely warms my heart when teams that "build through the draft" find success, I was curious to see what impact saviors have had on title runs throughout history. <strong>Interact with the below graphs to explore this impact, and read on below for more detail.</strong>
 			</p>
 		</div>
 		<div id="chart"></div>
@@ -299,9 +299,9 @@
 				var toggleGroup= chartArea.append("g")
 										.attr("id","toggle")
 
-				var defaultColor= "#AAAAAA"
-				var hoverColor= "#0000CC"
-				var pressedColor= "#000077"
+				var defaultColor= "#BBBBBB"
+				var hoverColor= "#7A7EAF"
+				var pressedColor= "#393D76"
 
 				var buttons= toggleGroup.selectAll("g.button")
 										.data(Object.keys(numerator))
@@ -461,7 +461,7 @@
 						.call(viewport)
 						.selectAll("rect")
 						.attr("height", nav['h'])
-						.attr("fill","#0000CC")
+						.attr("fill","#5961D8")
 						.attr("opacity",0.6)
 
 				/*~~~~~~~~   JERSEYS   ~~~~~~~~~~*/
@@ -516,31 +516,85 @@
 						.attr("fill","#555555")
 						.text("Saviors below this line played < " + minSaviorMPG + " mins per playoff game")
 
+				/* HELP TEXT */
 
+				//Use toggle buttons
 				jerseySVG.append("text")
 						.attr("id","pretext")
 						.attr("class","subtitle")
-						.attr("x",jersSVG_w/2)
-						.attr("y",jersSVG_h/4)
+						.attr("x",0)
+						.attr("y",20)
 						.attr("width",20)
-						.attr("text-anchor","middle")
+						//.attr("text-anchor","middle")
 						.attr("dominant-baseline","central")
 						.attr("font-size",14)
 						.attr("fill","#555555")
 						.attr("font-style","oblique")
-						.text("Click a bar to see the corresponding")
+						.text("<--- Click a toggle button to change the graph view,")
 				jerseySVG.append("text")
 						.attr("id","pretext")
 						.attr("class","subtitle")
-						.attr("x",jersSVG_w/2)
-						.attr("y",jersSVG_h/4+22)
+						.attr("x",35)
+						.attr("y",42)
 						.attr("width",20)
-						.attr("text-anchor","middle")
+						//.attr("text-anchor","middle")
 						.attr("dominant-baseline","central")
 						.attr("font-size",14)
 						.attr("fill","#555555")
 						.attr("font-style","oblique")
-						.text("team's saviors here")
+						.text("from minutes to win shares to savior count")
+
+				//Click on bars
+				jerseySVG.append("text")
+						.attr("id","pretext")
+						.attr("class","subtitle")
+						.attr("x",0)
+						.attr("y",150)
+						.attr("width",20)
+						//.attr("text-anchor","middle")
+						.attr("dominant-baseline","central")
+						.attr("font-size",14)
+						.attr("fill","#555555")
+						.attr("font-style","oblique")
+						.text("<--- Click a bar to see the corresponding")
+				jerseySVG.append("text")
+						.attr("id","pretext")
+						.attr("class","subtitle")
+						.attr("x",35)
+						.attr("y",172)
+						.attr("width",20)
+						//.attr("text-anchor","middle")
+						.attr("dominant-baseline","central")
+						.attr("font-size",14)
+						.attr("fill","#555555")
+						.attr("font-style","oblique")
+						.text("team's saviors")
+
+				//Use viewport
+				jerseySVG.append("text")
+						.attr("id","pretext")
+						.attr("class","subtitle")
+						.attr("x",0)
+						.attr("y",330)
+						.attr("width",20)
+						//.attr("text-anchor","middle")
+						.attr("dominant-baseline","central")
+						.attr("font-size",14)
+						.attr("fill","#555555")
+						.attr("font-style","oblique")
+						.text("<--- Click and drag within the line chart area to")
+				jerseySVG.append("text")
+						.attr("id","pretext")
+						.attr("class","subtitle")
+						.attr("x",35)
+						.attr("y",352)
+						.attr("width",20)
+						//.attr("text-anchor","middle")
+						.attr("dominant-baseline","central")
+						.attr("font-size",14)
+						.attr("fill","#555555")
+						.attr("font-style","oblique")
+						.text("zoom and pan the main bar graph")
 
             });
         </script>
