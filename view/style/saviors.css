@@ -1,5 +1,7 @@
 html,body {
 	font-family: Verdana;
+    color: #393D76;
+    background-color: #F6E3AE;
 }
 
 #vizTitle {
@@ -31,16 +33,16 @@ div#chart, div#jerseys{
 }
 
 #backgroundRect {
-	fill: #dddddd;
+	fill: #DAC99A;
 }
 
 .nav .fill {
-    fill: lightgrey;
+    fill: #DAC99A;
     stroke-width: 0px;
 }
 
 .nav .line {
     fill: none;
-    stroke: darkgrey;
+    stroke: white;
     stroke-width: 1px;
 }

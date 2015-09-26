@@ -18,7 +18,7 @@
 			<span class='st_facebook_hcount' id="fb" displayText='Facebook'></span>
 			<span class='st_twitter_hcount' id="twitter" displayText='Tweet'></span>
 			<p>
-				With all the talk about "building a great NBA team through the draft", I was curious to see what impact drafted players have on championship teams. If a player on a championship team was drafted by that team, I call him a "savior". Toggle the below graph to see the playoff win shares, minutes, and roster spots that can be attributed to saviors for each championship team. Use the line chart to zoom in on portions of the bar graph. 
+				A <em>savior</em> is a player present during the championship run of the team that drafted him. One example of my concerning emotional investment in the NBA: it genuinely warms my heart when teams that "build through the draft" find success. So, I was curious to see what impact saviors have had on title runs throughout history. <strong>Play with the bar graph to gauge this impact, and use the line chart to zoom in on portions of said bar graph.</strong>
 			</p>
 		</div>
 		<div id="chart"></div>
@@ -40,10 +40,10 @@
 
             	var totalTeams= teams.length;
             	var w= 800;
-            	var h= 350;
-            	var navH= 200;
+            	var h= 300;
+            	var navH= 180;
 
-            	var margin = {top: 100, right: 20, bottom: 20, left:80}
+            	var margin = {top: 40, right: 20, bottom: 20, left:80}
 
             	/*~~~~~~~~   OVERARCHING SVG   ~~~~~~~~~~*/
             	var chartsSVG= d3.select("#chart")
@@ -219,13 +219,13 @@
 						.call(yAxis);	
 
 				//Writing title and axis labels
-				var titleSize= margin.top/4
+				var titleSize= 18
 				var axisLabelSize= margin.left/5
 				var title= chartsSVG.append("text")
 								  .attr("class","label")
 								  .attr("id","title")
 								  .attr("x",margin.left+main["w"]/2)
-								  .attr("y",margin.top/1.5)
+								  .attr("y",margin.top/2)
 								  .attr("font-size",titleSize)
 								  .attr("text-anchor","middle")
 								  .attr("dominant-baseline","central")
@@ -278,7 +278,7 @@
 	                        .attr("width", barWidth)
 	                        .attr("height",function(d){
 	                                return yScale(0)-yScale(100*d[numer]/d[denom]);
-	                            })
+	                            }) 
 	                        .attr("fill",function(d) {
 	                        	if (d["team"] in colors) {
 	                        		return colors[d["team"]];
@@ -300,7 +300,7 @@
 										.attr("id","toggle")
 
 				var defaultColor= "#AAAAAA"
-				var hoverColor= "#0000ff"
+				var hoverColor= "#0000CC"
 				var pressedColor= "#000077"
 
 				var buttons= toggleGroup.selectAll("g.button")
@@ -461,9 +461,8 @@
 						.call(viewport)
 						.selectAll("rect")
 						.attr("height", nav['h'])
-						.attr("fill","purple")
-						.attr("opacity",0.5)
-
+						.attr("fill","#0000CC")
+						.attr("opacity",0.6)
 
 				/*~~~~~~~~   JERSEYS   ~~~~~~~~~~*/
 
@@ -480,9 +479,9 @@
 				var container= jerseySVG.append("rect")
 									.attr('width',"100%")
 									.attr('height',"100%")
-									.attr('fill',"#cceedd")
+									.attr('fill',"#F6E3AE")
 									.attr('stroke',"#AAAAAA")
-									.attr('stroke-width',4)
+									.attr('stroke-width',0)
 
 				//team name
 				var jersTitle= jerseySVG.append("text")
@@ -512,7 +511,7 @@
 						.attr("text-anchor","middle")
 						.attr("dominant-baseline","hanging")
 						.attr("font-size",sub)
-						.attr("fill","#888888")
+						.attr("fill","#555555")
 						.text("--- Saviors below this line played < " + minSaviorMPG + " mins per playoff game ---")
 
             });

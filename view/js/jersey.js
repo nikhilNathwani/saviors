@@ -9,14 +9,10 @@ var colors= {"ATL":"#D21033", "BOS":"#05854C", "BRK":"#000000", "CHA":"#25799A",
 
 var minSaviorMPG= 8;
 
-//Jersey container SVG vars
-var topMargin= 80;
-var minMargin= 20;
-
-var tTop= 10;
-var t= 24;
+var tTop= 0;
+var t= 18;
 var tBot= 10;
-var tSub= 16;
+var tSub= 12;
 var tSubBot= 20;
 
 var tH= tTop+t+tBot+tSub+tSubBot;
@@ -27,9 +23,9 @@ var jers_h= 100;
 
 var high_padY= 10;
 
-var subTop= 40;
-var sub= 14;
-var subBot= 20;
+var subTop= 28;
+var sub= 12;
+var subBot= 14;
 
 var j_w= 48;
 var j_h= 75;
