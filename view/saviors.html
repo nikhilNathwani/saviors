@@ -61,7 +61,7 @@
 				var yLabelText= {'mins':'Minutes %','ws':'Win Share %','count':"# Saviors with "+minSaviorMPG+"+ mpg"}
 
 
-				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1952, 'xAxisLoc':0, 'xN':2015, 'y0':0, 'yAxisLoc':1952, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
+				var main= {'w':w-margin.left-margin.right, 'h':h-margin.top-margin.bottom, 'x0':1951, 'xAxisLoc':0, 'xN':2016, 'y0':0, 'yAxisLoc':1951, 'yN':100, 't':5, 'xTitle':50, 'yTitle':50}
 
 
 				//metric is mins, ws, or count
@@ -256,7 +256,7 @@
 						  .attr('class', 'd3-tip')
 						  .offset([-10, 0])
 						  .html(function(d,i) {
-						    return "<p>" + (i+main['x0']) + " " + d.team + "</p> <p>Savior playoff mins %: <span style='color:red'>" + parseFloat(Math.round((100*d.saviorMins/d.totalMins)*10)/10).toFixed(1) + "</span></p> <p>Savior win share %: <span style='color:red'>" + parseFloat(Math.min(100,Math.round((100*d.saviorWS/d.totalWins)*10)/10)).toFixed(1) + "</span></p> <p> Click to see " + d.team+ "\'s <span style='color:red'>" + d["saviors"].length + "</span> saviors</p>";
+						    return "<p>" + (i+1+main['x0']) + " " + d.team + "</p> <p>Savior playoff mins %: <span style='color:red'>" + parseFloat(Math.round((100*d.saviorMins/d.totalMins)*10)/10).toFixed(1) + "</span></p> <p>Savior win share %: <span style='color:red'>" + parseFloat(Math.min(100,Math.round((100*d.saviorWS/d.totalWins)*10)/10)).toFixed(1) + "</span></p> <p> Click to see " + d.team+ "\'s <span style='color:red'>" + d["saviors"].length + "</span> saviors</p>";
 						  })
 				chart.call(tip)
 						
@@ -270,7 +270,7 @@
 							.append("rect")
 							.attr("class","mainBar")
 							.attr("x",function(d,i){
-	                                return xScale(i+main['x0'])-barWidth/2;
+	                                return xScale(i+1+main['x0'])-barWidth/2;
 	                            })
 	                        .attr("y",function(d){
 	                                return yScale(100*d[numer]/d[denom]);
@@ -409,12 +409,12 @@
 				    .call(navXAxis);
 
 				var navFill = d3.svg.area()
-				    .x(function (d,i) { return navXScale(i+main['x0']); })
+				    .x(function (d,i) { return navXScale(i+1+main['x0']); })
 				    .y0(nav['h'])
 				    .y1(function (d) { return navYScale(100*d[numer]/d[denom]); });
 
 				var navLine = d3.svg.line()
-				    .x(function (d,i) { return navXScale(i+main['x0']); })
+				    .x(function (d,i) { return navXScale(i+1+main['x0']); })
 				    .y(function (d) { return navYScale(100*d[numer]/d[denom]); });
 
 				navChart.append('path')
@@ -451,7 +451,7 @@
 					        	}
 					        })
 					        .attr("x", function(d,i) { 
-					        	return xScale(i+main['x0'])-d3.select(this).attr("width")/2;
+					        	return xScale(i+1+main['x0'])-d3.select(this).attr("width")/2;
 					        })
     					chart.select('#xAxis').call(xAxis);
 				    });
