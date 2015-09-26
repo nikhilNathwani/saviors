@@ -22,11 +22,11 @@ def post1951(cols):
 	return yearFromSeason(cols.findAll("td")[0].find("a").text) > 1951
 
 
-#return a players's lastName, fullName, jerseyNum, and hyperlink from team's roster table
-def genPlayerQuadruple(cells):
+#return a players's lastName, fullName, jerseyNum, yearsPro, and hyperlink from team's roster table
+def genPlayerQuintuple(cells):
 	#jerseyNum is 1st cell, name and link in 2nd cell
 	return {"jerseyNum":cells[0].text, "lastName":lastNameFromFull(cells[1]["csk"]),
-	 "fullName":cells[1].find("a").text, "link":cells[1].find('a')["href"].encode("ascii","ignore")}
+	 "fullName":cells[1].find("a").text, "yearsPro":cells[6].text, "link":cells[1].find('a')["href"].encode("ascii","ignore")}
 
 
 #returns a list of {lastName, fullName, jerseyNum, link} dicts
@@ -36,7 +36,7 @@ def getPlayersOnTeam(teamLink):
 	rosterRows= teamSite.find("table",{"id" : "roster"}).find("tbody").findAll("tr")
 	rosterCells= [data.findAll("td") for data in rosterRows]
 	
-	playerDicts= [genPlayerQuadruple(cells) for cells in rosterCells]
+	playerDicts= [genPlayerQuintuple(cells) for cells in rosterCells]
 	return playerDicts
 
 

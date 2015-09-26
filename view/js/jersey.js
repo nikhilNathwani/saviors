@@ -43,7 +43,8 @@ function savsWithEnoughMins(savs) {
 
 function collectJerseys(containerSVG, w, h, chosenTeam, yr, gamesWon, saviors) {
 
-    containerSVG.selectAll("text:not(#subtitle)").transition().delay(200).attr("opacity",1)
+    containerSVG.selectAll("text:not(.subtitle)").transition().delay(200).attr("opacity",1)
+    containerSVG.selectAll("#pretext").attr("opacity",0)
 
     containerSVG.select("#jersTitle").text(yr + " " + chosenTeam +"'s Saviors")
     containerSVG.select("#gamesWon").text("Playoff games won: " + gamesWon)
@@ -58,7 +59,7 @@ function collectJerseys(containerSVG, w, h, chosenTeam, yr, gamesWon, saviors) {
     var nL_i= 0; //same as above but for low-min
 
     
-    containerSVG.select("#subtitle")
+    containerSVG.select(".subtitle")
                 .attr("y",tH + Math.floor(1+(numHigh-1)/nH)*(jers_h) + (-1+Math.floor(numHigh/nH))*high_padY + subTop)
                 .transition().delay(200).attr("opacity",+(numLow>0))
 
@@ -139,7 +140,7 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num,scale) {
               .attr('class', 'd3-tip')
               .offset([-10, 0])
               .html(function(d,i) {
-                return "<p>Player: <span style='color:red'>" + d['fullName'] + "</span></p> <p>Playoff mins per game: <span style='color:red'>" + parseFloat(d['minsPerGame']).toFixed(1) + "</span></p> <p>Playoff win shares: <span style='color:red'>" + parseFloat(d['winShares']).toFixed(1) + "</p>";
+                return "<p>Player: <span style='color:red'>" + d['fullName'] + "</span></p> <p>Years pro: <span style='color:red'>" + d["yearsPro"] + "</span></p> <p>Playoff mins per game: <span style='color:red'>" + parseFloat(d['minsPerGame']).toFixed(1) + "</span></p> <p>Playoff win shares: <span style='color:red'>" + parseFloat(d['winShares']).toFixed(1) + "</p>";
               })
     g.call(jerseyTip)
     g.on('mouseenter', jerseyTip.show)

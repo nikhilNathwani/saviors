@@ -507,14 +507,40 @@
 
 				//subtitle for saviors that played too few minutes
 				jerseySVG.append("text")
-						.attr("id","subtitle")
+						.attr("class","subtitle")
 						.attr("opacity",0)
 						.attr("x",jersSVG_w/2)
 						.attr("text-anchor","middle")
 						.attr("dominant-baseline","hanging")
 						.attr("font-size",sub)
 						.attr("fill","#555555")
-						.text("--- Saviors below this line played < " + minSaviorMPG + " mins per playoff game ---")
+						.text("Saviors below this line played < " + minSaviorMPG + " mins per playoff game")
+
+
+				jerseySVG.append("text")
+						.attr("id","pretext")
+						.attr("class","subtitle")
+						.attr("x",jersSVG_w/2)
+						.attr("y",jersSVG_h/4)
+						.attr("width",20)
+						.attr("text-anchor","middle")
+						.attr("dominant-baseline","central")
+						.attr("font-size",14)
+						.attr("fill","#555555")
+						.attr("font-style","oblique")
+						.text("Click a bar to see the corresponding")
+				jerseySVG.append("text")
+						.attr("id","pretext")
+						.attr("class","subtitle")
+						.attr("x",jersSVG_w/2)
+						.attr("y",jersSVG_h/4+22)
+						.attr("width",20)
+						.attr("text-anchor","middle")
+						.attr("dominant-baseline","central")
+						.attr("font-size",14)
+						.attr("fill","#555555")
+						.attr("font-style","oblique")
+						.text("team's saviors here")
 
             });
         </script>
