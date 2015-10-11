@@ -46,7 +46,13 @@ function collectJerseys(containerSVG, w, h, chosenTeam, yr, gamesWon, saviors) {
     containerSVG.selectAll("text:not(.subtitle)").transition().delay(200).attr("opacity",1)
     containerSVG.selectAll("#pretext").attr("opacity",0)
 
-    containerSVG.select("#jersTitle").text(yr + " " + chosenTeam +"'s Saviors")
+    containerSVG.select("#jersTitle")
+                .text(yr + " " + chosenTeam +"'s Saviors")
+                .on('click',function(d){
+                    window.open("http://www.basketball-reference.com/teams/"+chosenTeam+"/"+yr+".html");
+                })
+                .style("cursor","pointer")
+                .style("text-decoration","underline")
     containerSVG.select("#gamesWon").text("Playoff games won: " + gamesWon)
     containerSVG.select("#subtitle").attr("opacity",0)
 
@@ -112,6 +118,7 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num,scale) {
     var g= jerseySVG.append("g")
                     .attr("transform","scale("+scale+")")
                     .attr("opacity",0)
+                    .style("cursor","pointer")
 
     //Drawing the jersey outline           
     var jerseyShape= g.append("g")
@@ -145,6 +152,9 @@ function createJersey(jerseySVG,x,y,chosenTeam,player,num,scale) {
     g.call(jerseyTip)
     g.on('mouseenter', jerseyTip.show)
     g.on('mouseleave', jerseyTip.hide)
+    g.on('click',function(d){
+        window.open("http://www.basketball-reference.com" + d.link);
+    })
 }
 
 function scaledText(parentGroup,team,id,value,fontSize,xTrans,yTrans,widthScale,heightScale) {
