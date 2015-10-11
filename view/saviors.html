@@ -66,7 +66,7 @@
 
 
 			<p class="question faqText"><span class="question">Q:</span> This chart starts with the '51-'52 season, but the first pro league was formed in '46. Why aren't earlier seasons shown?</p>
-			<p class="answer faqText"><span class="answer">A:</span> Bars from '46-'51 aren't shown because playoff mins per game data is not available on basketball-reference for those reasons.</p>
+			<p class="answer faqText"><span class="answer">A:</span> Bars from '46-'51 aren't shown because playoff mins per game data is not available on basketball-reference for those seasons.</p>
 
 
 			<p class="question faqText"><span class="question">Q:</span> This is a cool idea, but I don't love the design. Did you consider using the [insert something] tool or [insert something else] technique?</p>
@@ -388,6 +388,8 @@
 													.attr("fill",defaultColor);
 											}
 										})
+				buttons.append("svg:title")
+						.text(function(d) { return yLabelText[d]; });
 
 				function updateButtonColors(button, parent) {
 					parent.selectAll("rect")
