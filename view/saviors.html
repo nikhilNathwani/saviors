@@ -7,7 +7,6 @@
         <link type="text/css" rel="stylesheet" href="style/tooltip.css" />
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <script src="js/jersey.js"></script>
     </head>
@@ -15,14 +14,47 @@
 
 		<div id="intro">	
 			<h1 id="vizTitle">NBA Saviors</h1> 
-			<span class='st_facebook_hcount' id="fb" displayText='Facebook'></span>
-			<span class='st_twitter_hcount' id="twitter" displayText='Tweet'></span>
 			<p>
 				For lack of a less dramatic term, I use <em>savior</em> to mean a player present during the championship run of the team that drafted him. Since it genuinely warms my heart when teams that "build through the draft" find success, I was curious to see what impact saviors have had on title runs throughout history. <strong>Interact with the below graphs to explore this impact, and read on below for more detail.</strong>
 			</p>
 		</div>
 		<div id="chart"></div>
 		<div id="jerseys"></div>
+		<div id="faq">
+			<h2>FAQ</h2>
+
+			<p class="question"><span class="question">Q:</span> What is this chart supposed to tell me?</p>
+			<p class="answer"><span class="answer">A:</span> Taking a step back...teams can acquire players in 3 major ways:
+				<ol>
+					<li>Drafting them out of college/high school</li>
+					<li>Trading current players/assets to grab them from another team</li>
+					<li>Signing them as a free agent (i.e. hiring them once their existing runs out, even if that contract was with another team)</li>
+				</ol>
+				Teams have the opportunity to mold the players they draft and help set them up for great individual success. And when all goes well, these home-grown, talented drafees can help the team that drafted them win a championship. I.e. they can be "saviors", in a sense, because they helped earn a ring for the team that chose them on day one. 
+			<p>
+			<p>So, does developing players through the draft earn teams championships? <b>The above chart can tell us the extent to which championship teams rely on home-grown talent.</b> There are 3 ways I imagined measuring this so-called reliance:
+
+				<ol> 
+					<li><i class="fa fa-clock-o"></i> Minutes %: Out of the 960 minutes that are played during an NBA game (48 minute game duration, times 5 players on the court at once), what percentage of those minutes were played by a savior?</li>
+					<li><i class="fa fa-pie-chart"></i> Win share %: Out of the playoff games that the championship team won, what % of those wins are attributable to saviors? ("attributable" in the <a href="http://www.basketball-reference.com/about/ws.html">win shares</a> sense)</li>
+					<li><i class="fa fa-male"></i> Raw count: The raw number of saviors on the championship roster. I zone in on players that played at least 8 mins.</li>
+				</ol>
+
+				No matter which measurement method you consider, the interpretation is the same: tall bars in the chart indicate a high reliance on draftees. 
+			</p>	
+				
+
+			<p class="question"><span class="question">Q:</span> What conclusions can be drawn?</p>
+			<p class="answer"><span class="answer">A:</span> Here are some interesting things I picked up on from the above chart. Feel free to investigate on your own and share your findings.
+				<ul> 
+					<li><b>The '15 Golden State Warriors</b> (a popular example of building through the draft) had the highest savior minutes percentage (66.3%) in the playoffs since Jordan's '93 Bulls (84%).</li>
+					<li>On the flip side, <b>the '04 Pistons</b> found success outside of the draft (e.g. the entire core of Billups, Rip, 'Sheed, and Big Ben). They have the lowest savior mins percentage (24.2%) <em>ever</em>, and the lowest WS percentage (23.8%) since Wilt Chamberlain's 76ers (14.5%).</li>
+					<li><b>The '77 Blazers</b> are a rare, interesting example of team with a large number of saviors that did not account for a relatively large number of wins. Watch their bar decrease as you go from <i class="fa fa-male"></i> to <i class="fa fa-pie-chart"></i>.</li>
+					<li>Use the line chart to zoom into the '80s (by clicking and dragging on the line chart area). The Celtics and Lakers traded championships, and although I am a Celts fan, I have to marvel at how <b>the '80s Lakers</b> built through the draft in that era, growing their arsenal of saviors. Their savior WS % increased with each title, peaking at 83.3%.</li>
+					<li>In the last decade, only 3 rookies have played 8+ mins per game for their championship team: <b>Norris Cole of the '12 Heat, Glen Davis of the '08 Celtics, and Fabricio Oberto of the '07 Spurs</b>.</li>
+				</ul>
+			</p>
+		</div>
 
         <script type="text/javascript">
 
