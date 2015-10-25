@@ -77,7 +77,7 @@ def isSavior(playerLink,teamLink):
 	drafter= getPlayerDraftTeam(playerLink)
 	champ= teamFromURL(teamLink)
 	if champ in old: 
-		return drafter in old[champ]
+		return (drafter in old[champ]) or drafter==champ
 	return drafter==champ
 
 
