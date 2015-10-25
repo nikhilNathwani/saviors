@@ -71,11 +71,15 @@ def getTeamPlayoffMinsAndWins(teamLink):
 	return {"mins":totalGames*48*5,"wins":wins}
 
 
+def olderNames(n):
+	old= {"STL": ["MLH", "TRI"], "PHI": ["SYR"], "LAL": ["MNL"], "WSB": ["CAP", "BAL", "CHZ", "CHP"]}
+	return [] if n not in old else old[n]
+
 #returns true if the given player was drafted by the given team
 def isSavior(playerLink,teamLink):
 	drafter= getPlayerDraftTeam(playerLink)
 	champ= teamFromURL(teamLink)
-	return drafter==champ
+	return (drafter==champ) or (drafter in olderNames(champ))
 
 
 #returns list of players on championship team X that were drafted by X
